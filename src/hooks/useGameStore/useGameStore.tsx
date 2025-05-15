@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { AlertTypes, EventTypes, ItemType } from "@/types";
+import { calculateItemPrice } from "./utils";
 
 export type StoreState = {
   playerPoints: number;
@@ -8,6 +9,7 @@ export type StoreState = {
   eq: Map<number, number>;
   activeAlerts: AlertTypes[];
   activeEvents: Record<EventTypes, boolean>;
+  purchasedItems: ItemType[];
 };
 
 export type StoreActions = {
@@ -20,6 +22,11 @@ export type StoreActions = {
   addAlert: (alert: AlertTypes) => void;
   addEvent: (event: EventTypes) => void;
   removeEvent: (event: EventTypes) => void;
+  getPlayerPoints: () => number;
+  purchaseItem: (item: ItemType) => boolean;
+  getItemQuantity: (itemId: number) => number;
+  isPurchasable: (item: ItemType) => boolean;
+  addItemToInventory: (item: ItemType) => void;
 };
 
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
@@ -33,6 +40,7 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     [EventTypes.SongRequest]: false,
     [EventTypes.ShowEmotes]: false,
   },
+  purchasedItems: [],
   addPointsPSec: (qty: number) =>
     set((state) => ({
       pointsPSec: state.pointsPSec + qty,
@@ -78,6 +86,65 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
         [event]: false,
       },
     }));
+  },
+  getPlayerPoints: () => get().playerPoints,
+  purchaseItem: (item: ItemType) => {
+    const state = get();
+    const itemQuantity = state.eq.get(item.id) || 0;
+    const price = calculateItemPrice(item, itemQuantity);
+
+    if (state.playerPoints < price) {
+      return false;
+    }
+
+    // jednorazowe przedmioty
+    if (item.oneTimeUse && itemQuantity > 0) {
+      return false;
+    }
+
+    // apdejt
+    set((state) => {
+      const newEq = new Map(state.eq);
+      newEq.set(item.id, (newEq.get(item.id) || 0) + 1);
+
+      // dodajemy do listy
+      const purchasedItems = [...state.purchasedItems];
+      if (!purchasedItems.some((i) => i.id === item.id)) {
+        purchasedItems.push(item);
+      }
+
+      return {
+        playerPoints: state.playerPoints - price,
+        eq: newEq,
+        purchasedItems,
+      };
+    });
+
+    item.effect(get());
+
+    return true;
+  },
+  getItemQuantity: (itemId: number) => {
+    return get().eq.get(itemId) || 0;
+  },
+  isPurchasable: (item: ItemType) => {
+    const state = get();
+    const itemQuantity = state.eq.get(item.id) || 0;
+    const price = calculateItemPrice(item, itemQuantity);
+
+    if (item.oneTimeUse && itemQuantity > 0) {
+      return false;
+    }
+
+    return state.playerPoints >= price;
+  },
+  addItemToInventory: (item: ItemType) => {
+    set((state) => {
+      const newEq = new Map(state.eq);
+      newEq.set(item.id, (newEq.get(item.id) || 0) + 1);
+
+      return { eq: newEq };
+    });
   },
 }));
 
