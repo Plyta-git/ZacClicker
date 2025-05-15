@@ -1,0 +1,84 @@
+import { create } from "zustand";
+import { AlertTypes, EventTypes, ItemType } from "@/types";
+
+export type StoreState = {
+  playerPoints: number;
+  pointsMultiplier: number;
+  pointsPSec: number;
+  eq: Map<number, number>;
+  activeAlerts: AlertTypes[];
+  activeEvents: Record<EventTypes, boolean>;
+};
+
+export type StoreActions = {
+  buttonClick: () => void;
+  addPoints: (qty: number) => void;
+  addPointsPSec: (qty: number) => void;
+  decreasePoints: (qty: number) => void;
+  getPrice: (item: ItemType) => number;
+  addPointsMultiplier: (qty: number) => void;
+  addAlert: (alert: AlertTypes) => void;
+  addEvent: (event: EventTypes) => void;
+  removeEvent: (event: EventTypes) => void;
+};
+
+const useGameStore = create<StoreState & StoreActions>((set, get) => ({
+  playerPoints: 0,
+  pointsMultiplier: 1,
+  pointsPSec: 0,
+  eq: new Map<number, number>(),
+  activeAlerts: [],
+  activeEvents: {
+    [EventTypes.MediaRequest]: false,
+    [EventTypes.SongRequest]: false,
+    [EventTypes.ShowEmotes]: false,
+  },
+  addPointsPSec: (qty: number) =>
+    set((state) => ({
+      pointsPSec: state.pointsPSec + qty,
+    })),
+  addPoints: (qty: number) =>
+    set((state) => ({
+      playerPoints: state.playerPoints + qty,
+    })),
+  decreasePoints: (qty: number) =>
+    set((state) => ({
+      playerPoints: state.playerPoints - qty,
+    })),
+  buttonClick: () =>
+    set((state) => ({
+      playerPoints: state.playerPoints + 1 * state.pointsMultiplier,
+    })),
+  getPrice: (item: ItemType) => {
+    const itemCount = get().eq.get(item.id) ?? 0;
+    return Math.ceil(
+      item.deafulfPrice * Math.pow(item.growthFactor, itemCount)
+    );
+  },
+  addPointsMultiplier: (qty: number) => {
+    const currentMult = get().pointsMultiplier;
+    set({ pointsMultiplier: currentMult + qty });
+  },
+  addAlert: (alert: AlertTypes) => {
+    const currentAlerts = get().activeAlerts;
+    set({ activeAlerts: [...currentAlerts, alert] });
+  },
+  addEvent: (event: EventTypes) => {
+    set((state) => ({
+      activeEvents: {
+        ...state.activeEvents,
+        [event]: true,
+      },
+    }));
+  },
+  removeEvent: (event: EventTypes) => {
+    set((state) => ({
+      activeEvents: {
+        ...state.activeEvents,
+        [event]: false,
+      },
+    }));
+  },
+}));
+
+export default useGameStore;
