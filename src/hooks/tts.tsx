@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 const SETTINGS = {
   voice: "Jacek",
   volume: 1.0,
+  rate: 1.5, // Dodana prędkość odtwarzania
 };
 
 const useSpeak = (text: string) => {
@@ -16,6 +17,7 @@ const useSpeak = (text: string) => {
       ttsAPI.searchParams.append("voice", SETTINGS.voice);
       ttsAPI.searchParams.append("text", text);
       audio.src = ttsAPI.toString();
+      audio.playbackRate = 1.4;
       document.body.appendChild(audio);
       audio.play();
       audio.addEventListener("ended", () => audio.remove());

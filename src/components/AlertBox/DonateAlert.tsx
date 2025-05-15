@@ -1,25 +1,8 @@
 import useSpeak from "@/hooks/tts";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useSound from "use-sound";
-
-const twitchNicks = [
-  "PixelPanda",
-  "GameGuru",
-  "ShadowCaster",
-  "EpicZac",
-  "StreamQueen",
-  "NoobSlayer",
-  "ChillVibes",
-  "LootHunter",
-  "SpeedyFox",
-  "RetroRex",
-  "QuestWizard",
-  "SnackAttack",
-  "VictoryVixen",
-  "SilentStorm",
-  "LuckyLynx",
-];
+import { getRandomNickName } from "./utils";
 
 const DonateAlert = () => {
   const [playSound] = useSound("/donate.wav", { volume: 0.2 });
@@ -28,10 +11,8 @@ const DonateAlert = () => {
   useSpeak(
     "Gucci gucci kiedy minecraft jakieś klocki zagramy gucci gucci prosze kiedy klocki"
   );
-  const randomNick = useMemo(
-    () => twitchNicks[Math.floor(Math.random() * twitchNicks.length)],
-    []
-  );
+  const memoizedNick = useMemo(() => getRandomNickName(), []);
+
   useEffect(() => {
     playSound();
     if (!hasAdded.current) {
@@ -41,8 +22,20 @@ const DonateAlert = () => {
   }, [addPoints, playSound]);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center bg-amber-700/20 ">
-      nowy donate:<div className=" text-xl">{randomNick}</div> 5$
+    <div className="w-full h-full flex items-center ">
+      <img className=" size-40" src="./donate.jpg"></img>
+      <div className="flex flex-col justify-center items-center">
+        <div className="text-xl font-bold font-[Nunito]">
+          <span className=" text-donate font-bold">{memoizedNick} </span>
+          przekazał <span className="text-donate font-bold">10zł</span>!
+        </div>
+        <div className="m-2 text-sm font-nunito text-center">
+          {" "}
+          losowa treść donatelosowa treść donatelosowa treść donatelosowa treść
+          donate losowa treść donate losowa treść donate losowa treść donate
+          losowa treść donate losowa treść donate losowa treść donate
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,17 @@
+export const twitchNicks = [
+  "PixelPanda",
+  "GameGuru",
+  "ShadowCaster",
+  "EpicZac",
+  "StreamQueen",
+  "NoobSlayer",
+  "ChillVibes",
+  "LootHunter",
+  "SpeedyFox",
+  "RetroRex",
+  "QuestWizard",
+  "SnackAttack",
+  "VictoryVixen",
+  "SilentStorm",
+  "LuckyLynx",
+];

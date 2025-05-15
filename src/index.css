@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -11,6 +12,7 @@
   --color-main: #451192;
   --color-main-active: #6e20e3;
   --color-sidebar-acrive: #26262c;
+  --color-donate: #55b2a0;
 }
 
 @theme inline {

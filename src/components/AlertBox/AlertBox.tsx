@@ -16,7 +16,6 @@ const AlertBox = () => {
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-
     const showRandomAlert = () => {
       const randomDelay = getRandomInt(10000, 50000);
       timeoutId = setTimeout(() => {
@@ -24,7 +23,6 @@ const AlertBox = () => {
         setAlertVisible(true);
         setTimeout(() => setAlertVisible(false), 10000);
         showRandomAlert();
-        console.log(activeAlerts);
       }, randomDelay);
     };
     showRandomAlert();
@@ -50,7 +48,8 @@ const AlertBox = () => {
   }
 
   return (
-    <div className="w-1/6 h-1/6 absolute left-1/2 top-1/6 transform -translate-x-1/2 -translate-y-1/2 rounded-xl">
+    <div className="w-1/4 h-1/6 absolute left-1/2 top-1/6 transform -translate-x-1/2 -translate-y-1/2 rounded-xl">
+      {/*<DonateAlert />*/}
       {alertVisible && alertComponent}
     </div>
   );
