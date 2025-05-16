@@ -1,9 +1,13 @@
+import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { useState } from "react";
 import useSound from "use-sound";
 
-const ZacButton = ({ buttonClick }: { buttonClick: () => void }) => {
-  const [isClicked, setClicked] = useState(false);
+const ZacButton = () => {
+  const buttonClick = useGameStore((store) => store.buttonClick);
   const [play] = useSound("./SlapSound.mp3", { volume: 0.25 });
+
+  const [isClicked, setClicked] = useState(false);
+
   const onClick = () => {
     buttonClick();
     setClicked(true);

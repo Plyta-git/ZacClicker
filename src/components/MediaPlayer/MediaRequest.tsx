@@ -42,6 +42,8 @@ function MediaRequest() {
     "https://streamable.com/j9gl3d",
     "https://streamable.com/uwk5tj",
     "https://www.youtube.com/watch?v=ljpQkzFu61A",
+    "https://streamable.com/etowy3",
+    "https://www.youtube.com/watch?v=MY5LjtQ0wn0",
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [volumePlayer, setVolumePlayer] = useState(0.5);
@@ -73,8 +75,9 @@ function MediaRequest() {
           onChange={(e) => setVolumePlayer(Number(e.target.value))}
           min={0}
           max={1}
-          step={0.1}
+          step={0.01}
         />
+        {Math.round(volumePlayer * 100)}%
       </div>
       <ReactPlayer
         volume={volumePlayer}

@@ -74,6 +74,10 @@ function SongRequest() {
       url: "https://www.youtube.com/watch?v=bypkdp2oZo4",
       title: "Elvis Crespo - Suavemente (Vaskan Hardstyle Remix)",
     },
+    {
+      url: "https://www.youtube.com/watch?v=ZuviMz-A3S0",
+      title: "Paranoizer - Brainiac",
+    },
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [volumePlayer, setVolumePlayer] = useState(0.5);
