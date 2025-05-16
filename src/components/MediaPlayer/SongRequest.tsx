@@ -24,6 +24,56 @@ function SongRequest() {
       url: "https://www.youtube.com/watch?v=Rj__j0cZrFk",
       title: "Mamm0n - Samotność (Official Music Video)",
     },
+    {
+      url: "https://www.youtube.com/watch?v=gDOYMSo3HBo",
+      title:
+        "Dawid Jasper - Hard Rock Hallelujah (Official Video) 🎵🔥 █▬█ █ ▀█▀",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=d7X13RnpguE",
+      title: "delordione - Kiedy będę sam (ft. Myslovitz) 🎵",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=cgyUcv1XYm4",
+      title: "ROGAL DDL ale to j-pop",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=Qb6Bd1J954o",
+      title: "Manieczki - Surrender",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=NjD0H4eBfng",
+      title: "NAE NI💙💙A ORIGINAL SONG",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=z5HRl7NY2z0",
+      title: "IMPREZA Z GUCIEM 🎵",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=Qkny4m06Qlo",
+      title: "Amrahstyle",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=t3VfIH8P6wo",
+      title: "YOUNG DEMONZ - BESTIA (OFFICIAL VIDEO) 🎵 🔥",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=I3zj0Rd28jw",
+      title: "Manieczki Dj Hazel-Sprężynka",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=_eDpH4hMW1o",
+      title:
+        "A$AP Rocky - Praise The Lord (Da Shine) (Official Audio) ft. Skepta",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=7lN2zkBGoXs",
+      title: "Duggee i odznaka patyka | Hej, Duggee Seria 2 | Hej, Duggee!",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=bypkdp2oZo4",
+      title: "Elvis Crespo - Suavemente (Vaskan Hardstyle Remix)",
+    },
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [volumePlayer, setVolumePlayer] = useState(0.5);

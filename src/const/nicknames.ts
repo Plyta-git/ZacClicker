@@ -15,3 +15,9 @@ export const twitchNicks = [
   "SilentStorm",
   "LuckyLynx",
 ];
+
+export const donateMessages = [
+  `Podpiszesz profil steam myszeczko? https://steamcommunity.com/id/cyberpunktaktak/`,
+  `gucci gucci kiedy minecraft`,
+  `Gucci gucci kiedy minecraft jakieś klocki zagramy gucci gucci prosze kiedy klocki`,
+];

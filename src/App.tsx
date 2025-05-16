@@ -1,11 +1,11 @@
 import useGameStore from "./hooks/useGameStore/useGameStore";
-import Store from "./components/Store/Store";
 import ZacButton from "./components/ZacButton/ZacButton";
 import { useEffect, useRef } from "react";
 import AlertBox from "./components/AlertBox/AlertBox";
 import MediaRequest from "./components/MediaPlayer/MediaRequest";
 import SongRequest from "./components/MediaPlayer/SongRequest";
 import ShowEmote from "./components/ShowEmote/ShowEmote";
+import Store from "./components/Store/Store";
 
 function App() {
   const points = useGameStore((store) => store.playerPoints);
