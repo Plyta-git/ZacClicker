@@ -20,6 +20,7 @@ export type StoreActions = {
   addAlert: (alert: AlertTypes) => void;
   addEvent: (event: EventTypes) => void;
   removeEvent: (event: EventTypes) => void;
+  buyItem: (item: ItemType, callback: () => void) => void;
 };
 
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
@@ -62,6 +63,19 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   addAlert: (alert: AlertTypes) => {
     const currentAlerts = get().activeAlerts;
     set({ activeAlerts: [...currentAlerts, alert] });
+  },
+  buyItem: (item: ItemType, callback: () => void) => {
+    const currentItemPrice = get().getPrice(item);
+    const playerPoints = get().playerPoints;
+    if (playerPoints >= currentItemPrice) {
+      callback();
+      item.effect(get());
+      get().decreasePoints(currentItemPrice);
+      const currentItemCount = get().eq.get(item.id) || 0;
+      const newEq = get().eq;
+      newEq.set(item.id, currentItemCount + 1);
+      set({ eq: newEq });
+    }
   },
   addEvent: (event: EventTypes) => {
     set((state) => ({

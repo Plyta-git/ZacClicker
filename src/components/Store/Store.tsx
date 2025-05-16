@@ -1,12 +1,11 @@
 import items from "@/const/items";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { ItemType } from "@/types";
-import { onBuyItem } from "./utils";
 import useSound from "use-sound";
 
 const Item: React.FC<{ item: ItemType }> = ({ item }) => {
   const gameStore = useGameStore((store) => store);
-  const { getPrice, eq, playerPoints } = gameStore;
+  const { getPrice, eq, playerPoints, buyItem } = gameStore;
   const itemPrice = getPrice(item);
   const [playBuyItemSound] = useSound("/buyitem.wav", { volume: 0.7 });
   const available = itemPrice < 2 * playerPoints || (eq.get(item.id) || 0) > 0;
@@ -14,7 +13,7 @@ const Item: React.FC<{ item: ItemType }> = ({ item }) => {
   if (item.oneTimeUse && eq.has(item.id)) return;
   return (
     <div
-      onClick={() => available && onBuyItem(item, gameStore, playBuyItemSound)}
+      onClick={() => buyItem(item, playBuyItemSound)}
       className={`select-none transition-all flex justify-between p-2 ${
         available &&
         itemPrice < playerPoints &&
