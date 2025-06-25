@@ -8,6 +8,7 @@ export type StoreState = {
   eq: Map<number, number>;
   activeAlerts: AlertTypes[];
   activeEvents: Record<EventTypes, boolean>;
+  skips: number;
 };
 
 export type StoreActions = {
@@ -21,6 +22,8 @@ export type StoreActions = {
   addEvent: (event: EventTypes) => void;
   removeEvent: (event: EventTypes) => void;
   buyItem: (item: ItemType, callback: () => void) => void;
+  addSkip: (qty: number) => void;
+  removeSkip: (qty: number) => void;
 };
 
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
@@ -29,10 +32,12 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   pointsPSec: 0,
   eq: new Map<number, number>(),
   activeAlerts: [],
+  skips: 0,
   activeEvents: {
     [EventTypes.MediaRequest]: false,
     [EventTypes.SongRequest]: false,
     [EventTypes.ShowEmotes]: false,
+    [EventTypes.Slots]: false,
   },
   addPointsPSec: (qty: number) =>
     set((state) => ({
@@ -41,6 +46,14 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   addPoints: (qty: number) =>
     set((state) => ({
       playerPoints: state.playerPoints + qty,
+    })),
+  addSkip: (qty: number) =>
+    set((state) => ({
+      skips: state.skips + qty,
+    })),
+  removeSkip: (qty: number) =>
+    set((state) => ({
+      skips: state.skips - qty,
     })),
   decreasePoints: (qty: number) =>
     set((state) => ({

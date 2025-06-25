@@ -1,0 +1,148 @@
+export const MediaRequestURLs = [
+  "https://www.youtube.com/watch?v=cVaIPF7xnQg",
+  "https://www.youtube.com/watch?v=h-EaOY8VKoY",
+  "https://streamable.com/p16bsn",
+  "https://streamable.com/ntg9pw",
+  "https://streamable.com/zvp87a",
+  "https://streamable.com/13a4xr",
+  "https://streamable.com/0zbj7d",
+  "https://streamable.com/dqxw1h",
+  "https://streamable.com/tsuz8s",
+  "https://www.youtube.com/watch?v=TA3KPNcvb5s",
+  "https://www.youtube.com/watch?v=Yo5QO8K0DrA",
+  "https://www.youtube.com/watch?v=LhCBBwwtluY",
+  "https://www.youtube.com/shorts/_kR0pe3vcws",
+  "https://www.youtube.com/watch?v=RFPW2hkorng",
+  "https://www.youtube.com/watch?v=m1qHLquFAgg",
+  "https://www.youtube.com/watch?v=R4LjTEvdn5g",
+  "https://www.youtube.com/watch?v=BthhzuTYgCk",
+  "https://www.youtube.com/watch?v=SOOmVvgN5i4",
+  "https://www.youtube.com/watch?v=41OZWJeh5N4",
+  "https://www.youtube.com/watch?v=UqjZMwRLlLs",
+  "https://www.youtube.com/watch?v=Mae46HPlJ9o",
+  "https://streamable.com/q3t5nm",
+  "https://www.youtube.com/watch?v=_cNNh82gh20",
+  "https://www.youtube.com/watch?v=Q8vIjrQ8sDc",
+  "https://www.youtube.com/watch?v=VUciLHmhp1U",
+  "https://www.youtube.com/watch?v=n9HiPMpOCoc",
+  "https://www.youtube.com/watch?v=-hFL2xJOb34",
+  "https://www.youtube.com/watch?v=WGBhqb3UrhQ",
+  "https://www.youtube.com/watch?v=QGI4FOEvB7A",
+  "https://www.youtube.com/watch?v=H5tKuz5r7Lw",
+  "https://www.youtube.com/watch?v=sI1-y806LcQ",
+  "https://streamable.com/dn3xw1",
+  "https://www.youtube.com/watch?v=YXG1biUcQ_w",
+  "https://www.youtube.com/watch?v=KKrfTzXE7vc",
+  "https://www.youtube.com/watch?v=rWbjGYZUKFg",
+  "https://streamable.com/bpz8i1",
+  "https://streamable.com/ggqu1a",
+  "https://www.youtube.com/watch?v=SIfOaE78TB0",
+  "https://streamable.com/j9gl3d",
+  "https://streamable.com/uwk5tj",
+  "https://www.youtube.com/watch?v=ljpQkzFu61A",
+  "https://streamable.com/etowy3",
+  "https://www.youtube.com/watch?v=MY5LjtQ0wn0",
+  "https://streamable.com/ko903h",
+  "https://streamable.com/3nd92r",
+  "https://streamable.com/1m2b13",
+  "https://streamable.com/15nqyl",
+  "https://streamable.com/j3n0xg",
+  "https://streamable.com/l67f0e",
+  "https://streamable.com/030hzb",
+  "https://streamable.com/2dygip",
+  "https://streamable.com/96cq8e",
+  "https://streamable.com/1xdngx",
+  "https://streamable.com/y6930q",
+  "https://streamable.com/uw0yzw",
+  "https://streamable.com/0pmnsv",
+  "https://streamable.com/g84wse",
+  "https://www.youtube.com/watch?v=RXsQUeWtqZA",
+  "https://www.youtube.com/watch?v=5hP29i_z21E",
+  "https://streamable.com/fzv6z2",
+  "https://www.youtube.com/watch?v=4fCxtdcjaV8",
+  "https://streamable.com/vcaiux",
+  "https://streamable.com/j9gl3d",
+];
+
+export const MediaRequestURLs2 = ["https://streamable.com/j9gl3d"];
+
+export const SongRequestURLs = [
+  {
+    url: "https://www.youtube.com/watch?v=xVdn9GhwJgk",
+    title: "danny popek bollywodzka produkcja pakistanskie disco",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=lrDSanh5p0k",
+    title: "♫ TRALALERO TRALALA *PIOSENKA* - przemekbestgames feat. DOKNES",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=XJOex1-upLo",
+    title: "GENZIE - SPERMIARA (OFICJALNA WERSJA)",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=O0lf_fE3HwA",
+    title: "Gwen Stefani - The Sweet Escape ft. Akon",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=LaXazWRppwI",
+    title: "J. Laskowski 2Pac Baby Don’t Cry Swiat nie wierzy lzom",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=Rj__j0cZrFk",
+    title: "Mamm0n - Samotność (Official Music Video)",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=gDOYMSo3HBo",
+    title:
+      "Dawid Jasper - Hard Rock Hallelujah (Official Video) 🎵🔥 █▬█ █ ▀█▀",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=d7X13RnpguE",
+    title: "delordione - Kiedy będę sam (ft. Myslovitz) 🎵",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=cgyUcv1XYm4",
+    title: "ROGAL DDL ale to j-pop",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=Qb6Bd1J954o",
+    title: "Manieczki - Surrender",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=NjD0H4eBfng",
+    title: "NAE NI💙💙A ORIGINAL SONG",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=z5HRl7NY2z0",
+    title: "IMPREZA Z GUCIEM 🎵",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=Qkny4m06Qlo",
+    title: "Amrahstyle",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=t3VfIH8P6wo",
+    title: "YOUNG DEMONZ - BESTIA (OFFICIAL VIDEO) 🎵 🔥",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=I3zj0Rd28jw",
+    title: "Manieczki Dj Hazel-Sprężynka",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=_eDpH4hMW1o",
+    title:
+      "A$AP Rocky - Praise The Lord (Da Shine) (Official Audio) ft. Skepta",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=7lN2zkBGoXs",
+    title: "Duggee i odznaka patyka | Hej, Duggee Seria 2 | Hej, Duggee!",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=bypkdp2oZo4",
+    title: "Elvis Crespo - Suavemente (Vaskan Hardstyle Remix)",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=ZuviMz-A3S0",
+    title: "Paranoizer - Brainiac",
+  },
+];

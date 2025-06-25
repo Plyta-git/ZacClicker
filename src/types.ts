@@ -22,4 +22,5 @@ export enum EventTypes {
   MediaRequest = "mediarequest",
   SongRequest = "songrequest",
   ShowEmotes = "showemotes",
+  Slots = "slots",
 }

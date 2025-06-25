@@ -1,30 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import SlotReel from "./SlotReel";
+import useGameStore from "@/hooks/useGameStore/useGameStore";
 
-const originalSlides = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const generateRandomSlides = (
-  sourceArray: number[],
-  length: number
-): number[] => {
+const generateRandomSlides = (length: number): number[] => {
   const result: number[] = [];
   for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * sourceArray.length);
-    result.push(sourceArray[randomIndex]);
+    const randomIndex = Math.floor(Math.random() * 15);
+    result.push(randomIndex);
   }
   return result;
 };
 
 const generateSliders = () => {
-  const slides1 = generateRandomSlides(originalSlides, 10);
+  const slides1 = generateRandomSlides(10);
   const slides2 =
-    Math.floor(Math.random() * 10) >= 5
-      ? slides1
-      : generateRandomSlides(originalSlides, 10);
+    Math.floor(Math.random() * 10) >= 5 ? slides1 : generateRandomSlides(10);
   const slides3 =
-    Math.floor(Math.random() * 10) > 5
-      ? slides1
-      : generateRandomSlides(originalSlides, 10);
+    Math.floor(Math.random() * 10) > 5 ? slides1 : generateRandomSlides(10);
 
   return [slides1, slides2, slides3];
 };
@@ -35,16 +27,15 @@ const SlotMachine = () => {
   const [results, setResults] = useState<(number | null)[]>([null, null, null]);
   const [completedReels, setCompletedReels] = useState(0);
   const [sliders, setSliders] = useState(generateSliders);
-
+  const slotsEvent = useGameStore((store) => store.activeEvents.slots);
+  const addPoints = useGameStore((store) => store.addPoints);
   useEffect(() => {
     console.log(sliders);
   }, [sliders]);
 
   useEffect(() => {
     if (results.includes(null)) return;
-    console.log(results);
-    if (results.every((val) => val === results[0]))
-      alert("WIN:" + results.join());
+    if (results.every((val) => val === results[0])) addPoints(200);
   }, [results]);
 
   const handleReelComplete = (reelIndex: number, result: number) => {
@@ -65,7 +56,7 @@ const SlotMachine = () => {
     setResults([null, null, null]);
     setCompletedReels(0);
     setSpinTrigger((prev) => prev + 1);
-    setTimeout(() => setSliders(generateSliders), 1600);
+    setTimeout(() => setSliders(generateSliders), 1000);
   }, [isSpinning]);
 
   useEffect(() => {
@@ -74,9 +65,10 @@ const SlotMachine = () => {
     }
   }, [completedReels]);
 
+  if (!slotsEvent) return <></>;
   return (
-    <div className="absolute  w-1/5 h-1/4 left-1/5 bottom-0 flex flex-col">
-      <div className="flex ">
+    <div className="absolute  w-1/5 h-1/4 left-1/5 bottom-0 flex flex-col bg-chat border-r-2 border-t-2">
+      <div className="flex">
         <SlotReel
           slides={sliders[0]}
           isSpinning={isSpinning}

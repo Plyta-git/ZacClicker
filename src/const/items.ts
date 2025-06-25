@@ -90,6 +90,25 @@ const items = [
     },
     img: "/gucioF.png",
   },
+  {
+    id: 10,
+    name: "Sloty",
+    deafulfPrice: 25,
+    growthFactor: 100,
+    oneTimeUse: true,
+    effect: (gameStore: StoreActions) => gameStore.addEvent(EventTypes.Slots),
+    img: "/gucciKiedyFortnajt.gif",
+  },
+  {
+    id: 11,
+    name: "Media/Song request skip",
+    deafulfPrice: 10,
+    growthFactor: 1.5,
+    effect: (gameStore: StoreActions) => gameStore.addSkip(1),
+    img: "/gucciKiedyFortnajt.gif",
+  },
 ];
 
 export default items;
+
+//TO DO chowanie elementów (maska z zaleznoscia)

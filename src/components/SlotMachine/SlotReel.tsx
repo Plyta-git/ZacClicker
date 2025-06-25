@@ -9,6 +9,61 @@ interface SlotReelProps {
   slides: number[];
 }
 
+const SlotsEmote: React.FC<{ index: number }> = ({ index }) => {
+  switch (index) {
+    case 0:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/autobus.gif" />
+      );
+    case 1:
+      return <img className=" fitobject-none size-14" src="/Slots/balon.gif" />;
+    case 2:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/cmonBrug.png" />
+      );
+    case 3:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/Delmitooo.png" />
+      );
+    case 4:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/flotti.png" />
+      );
+    case 5:
+      return <img className=" fitobject-none size-14" src="/Slots/gucci.png" />;
+    case 6:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/gucioCo.png" />
+      );
+    case 7:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/JasperWTF.png" />
+      );
+    case 8:
+      return <img className=" fitobject-none size-14" src="/Slots/kac.png" />;
+    case 9:
+      return <img className=" fitobject-none size-14" src="/Slots/Kacci.png" />;
+    case 10:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/mamonni.png" />
+      );
+    case 11:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/POWAGA.png" />
+      );
+    case 12:
+      return (
+        <img className=" fitobject-none size-14" src="/Slots/smalcci.png" />
+      );
+    case 13:
+      return <img className=" fitobject-none size-14" src="/Slots/xD.png" />;
+    case 14:
+      return <img className=" fitobject-none size-14" src="/Slots/zozo.png" />;
+    default:
+      return <img className=" fitobject-none size-14" src="/Slots/balon.gif" />;
+  }
+};
+
 const SlotReel: React.FC<SlotReelProps> = ({
   isSpinning,
   onSpinComplete,
@@ -67,8 +122,11 @@ const SlotReel: React.FC<SlotReelProps> = ({
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {slides.map((number, index) => (
-              <div className="embla__slide" key={index}>
-                <div className="embla__slide__number">{number}</div>
+              <div
+                className="embla__slide w-full h-full justify-center flex align-middle items-center"
+                key={index}
+              >
+                <SlotsEmote index={number} />
               </div>
             ))}
           </div>
