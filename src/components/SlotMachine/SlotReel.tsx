@@ -13,54 +13,62 @@ const SlotsEmote: React.FC<{ index: number }> = ({ index }) => {
   switch (index) {
     case 0:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/autobus.gif" />
+        <img className=" fitobject-none size-14" src="/Emotes/autobus.gif" />
       );
     case 1:
-      return <img className=" fitobject-none size-14" src="/Slots/balon.gif" />;
+      return (
+        <img className=" fitobject-none size-14" src="/Emotes/balon.gif" />
+      );
     case 2:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/cmonBrug.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/cmonBrug.png" />
       );
     case 3:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/Delmitooo.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/Delmitooo.png" />
       );
     case 4:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/flotti.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/flotti.png" />
       );
     case 5:
-      return <img className=" fitobject-none size-14" src="/Slots/gucci.png" />;
+      return (
+        <img className=" fitobject-none size-14" src="/Emotes/gucci.png" />
+      );
     case 6:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/gucioCo.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/gucioCo.png" />
       );
     case 7:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/JasperWTF.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/JasperWTF.png" />
       );
     case 8:
-      return <img className=" fitobject-none size-14" src="/Slots/kac.png" />;
+      return <img className=" fitobject-none size-14" src="/Emotes/kac.png" />;
     case 9:
-      return <img className=" fitobject-none size-14" src="/Slots/Kacci.png" />;
+      return (
+        <img className=" fitobject-none size-14" src="/Emotes/Kacci.png" />
+      );
     case 10:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/mamonni.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/mamonni.png" />
       );
     case 11:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/POWAGA.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/POWAGA.png" />
       );
     case 12:
       return (
-        <img className=" fitobject-none size-14" src="/Slots/smalcci.png" />
+        <img className=" fitobject-none size-14" src="/Emotes/smalcci.png" />
       );
     case 13:
-      return <img className=" fitobject-none size-14" src="/Slots/xD.png" />;
+      return <img className=" fitobject-none size-14" src="/Emotes/xD.png" />;
     case 14:
-      return <img className=" fitobject-none size-14" src="/Slots/zozo.png" />;
+      return <img className=" fitobject-none size-14" src="/Emotes/zozo.png" />;
     default:
-      return <img className=" fitobject-none size-14" src="/Slots/balon.gif" />;
+      return (
+        <img className=" fitobject-none size-14" src="/Emotes/balon.gif" />
+      );
   }
 };
 

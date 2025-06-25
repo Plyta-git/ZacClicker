@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import SlotReel from "./SlotReel";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
+import useSound from "use-sound";
 
 const generateRandomSlides = (length: number): number[] => {
   const result: number[] = [];
@@ -29,13 +30,19 @@ const SlotMachine = () => {
   const [sliders, setSliders] = useState(generateSliders);
   const slotsEvent = useGameStore((store) => store.activeEvents.slots);
   const addPoints = useGameStore((store) => store.addPoints);
+  const [playSpinSound] = useSound("/Spin.wav", { volume: 0.3 });
+  const [playWinSound] = useSound("/BIGWIN.mp3", { volume: 1 });
+
   useEffect(() => {
     console.log(sliders);
   }, [sliders]);
 
   useEffect(() => {
     if (results.includes(null)) return;
-    if (results.every((val) => val === results[0])) addPoints(200);
+    if (results.every((val) => val === results[0])) {
+      addPoints(200);
+      playWinSound();
+    }
   }, [results]);
 
   const handleReelComplete = (reelIndex: number, result: number) => {
@@ -53,6 +60,7 @@ const SlotMachine = () => {
   const startSpin = useCallback(() => {
     if (isSpinning) return;
     setIsSpinning(true);
+    playSpinSound();
     setResults([null, null, null]);
     setCompletedReels(0);
     setSpinTrigger((prev) => prev + 1);
