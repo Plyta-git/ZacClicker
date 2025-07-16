@@ -3,7 +3,7 @@ import { StoreActions, StoreState } from "./hooks/useGameStore/useGameStore";
 export type ItemType = {
   id: number;
   name: string;
-  deafulfPrice: number;
+  defaultPrice: number;
   growthFactor: number;
   effect: (gameStore: StoreActions & StoreState) => void;
   img: string;

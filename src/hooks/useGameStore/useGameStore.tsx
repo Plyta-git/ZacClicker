@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { AlertTypes, EventTypes, ItemType } from "@/types";
+import { ALERT_CONFIG } from "@/const/config";
 
 export type StoreState = {
   playerPoints: number;
   pointsMultiplier: number;
   pointsPSec: number;
-  eq: Map<number, number>;
+  itemCounts: Map<number, number>;
   activeAlerts: AlertTypes[];
   activeEvents: Record<EventTypes, boolean>;
   skips: number;
@@ -38,7 +39,7 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   playerPoints: 0,
   pointsMultiplier: 1,
   pointsPSec: 0,
-  eq: new Map<number, number>(),
+  itemCounts: new Map<number, number>(),
   activeAlerts: [],
   skips: 0,
   activeEvents: {
@@ -56,6 +57,7 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     set((state) => ({
       pointsPSec: state.pointsPSec + qty,
     })),
+  /** @description Adds points to the player's total. */
   addPoints: (qty: number) =>
     set((state) => ({
       playerPoints: state.playerPoints + qty,
@@ -77,9 +79,9 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
       playerPoints: state.playerPoints + 1 * state.pointsMultiplier,
     })),
   getPrice: (item: ItemType) => {
-    const itemCount = get().eq.get(item.id) ?? 0;
+    const itemCount = get().itemCounts.get(item.id) ?? 0;
     return Math.ceil(
-      item.deafulfPrice * Math.pow(item.growthFactor, itemCount)
+      item.defaultPrice * Math.pow(item.growthFactor, itemCount)
     );
   },
   addPointsMultiplier: (qty: number) => {
@@ -97,10 +99,10 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
       callback();
       item.effect(get());
       get().decreasePoints(currentItemPrice);
-      const currentItemCount = get().eq.get(item.id) || 0;
-      const newEq = get().eq;
-      newEq.set(item.id, currentItemCount + 1);
-      set({ eq: newEq });
+      const currentItemCount = get().itemCounts.get(item.id) || 0;
+      const newItemCounts = get().itemCounts;
+      newItemCounts.set(item.id, currentItemCount + 1);
+      set({ itemCounts: newItemCounts });
     }
   },
   addEvent: (event: EventTypes) => {
@@ -148,9 +150,9 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   },
   getAlertReward: (type: AlertTypes) => {
     // Przykład: bazowa nagroda * (1 + 0.5 * poziom)
-    const base = 15;
+    const { REWARD_BASE, REWARD_LEVEL_MULTIPLIER } = ALERT_CONFIG;
     const lvl = get().alertLevels.get(type) || 0;
-    return Math.round(base * (1 + 0.5 * lvl));
+    return Math.round(REWARD_BASE * (1 + REWARD_LEVEL_MULTIPLIER * lvl));
   },
 }));
 

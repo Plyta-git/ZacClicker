@@ -1,6 +1,7 @@
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { useState } from "react";
 import useSound from "use-sound";
+import { ZAC_BUTTON_CONFIG } from "@/const/config";
 
 const ZacButton = () => {
   const buttonClick = useGameStore((store) => store.buttonClick);
@@ -12,7 +13,7 @@ const ZacButton = () => {
     buttonClick();
     setClicked(true);
     play();
-    setTimeout(() => setClicked(false), 150);
+    setTimeout(() => setClicked(false), ZAC_BUTTON_CONFIG.CLICK_TIMEOUT);
   };
   return (
     <button className=" flex justify-center select-none" onClick={onClick}>

@@ -1,8 +1,10 @@
+import { REACTION_TEST_CONFIG } from "@/const/config";
 /**
  * Zwraca losowe opóźnienie w ms (1-3 sekundy).
  */
 export function getRandomDelay(): number {
-  return Math.floor(Math.random() * 2000) + 1000;
+  const { DELAY_MIN, DELAY_MAX } = REACTION_TEST_CONFIG;
+  return Math.floor(Math.random() * (DELAY_MAX - DELAY_MIN)) + DELAY_MIN;
 }
 
 /**
@@ -11,19 +13,34 @@ export function getRandomDelay(): number {
  * Im szybciej, tym więcej punktów (max 400, min 1)
  */
 export function getPointsForReaction(ms: number): number {
-  if (ms >= 300) return 5;
-  if (ms >= 200) return Math.round(20 + ((5 - 20) * (ms - 200)) / 100); // 200-299ms: 20->5
-  if (ms >= 150) {
+  const {
+    POINTS_TIER_1_MS,
+    POINTS_TIER_1_VAL,
+    POINTS_TIER_2_MS,
+    POINTS_TIER_2_VAL,
+    POINTS_TIER_3_MS,
+    POINTS_TIER_3_VAL,
+    POINTS_TIER_4_MS,
+    POINTS_TIER_4_VAL,
+  } = REACTION_TEST_CONFIG;
+  if (ms >= POINTS_TIER_1_MS) return POINTS_TIER_1_VAL;
+  if (ms >= POINTS_TIER_2_MS)
+    return Math.round(
+      POINTS_TIER_2_VAL +
+        ((POINTS_TIER_1_VAL - POINTS_TIER_2_VAL) * (ms - POINTS_TIER_2_MS)) /
+          100
+    ); // 200-299ms: 20->5
+  if (ms >= POINTS_TIER_3_MS) {
     // 150-199ms: 100->20 (nieliniowo)
     // Skala wykładnicza
-    const scale = (ms - 150) / 50; // 0..1
-    return Math.round(100 * Math.pow(0.2, scale)); // 100->20
+    const scale = (ms - POINTS_TIER_3_MS) / 50; // 0..1
+    return Math.round(POINTS_TIER_3_VAL * Math.pow(0.2, scale)); // 100->20
   }
-  if (ms >= 100) {
+  if (ms >= POINTS_TIER_4_MS) {
     // 100-149ms: 400->100 (nieliniowo)
-    const scale = (ms - 100) / 50; // 0..1
-    return Math.round(400 * Math.pow(0.25, scale)); // 400->100
+    const scale = (ms - POINTS_TIER_4_MS) / 50; // 0..1
+    return Math.round(POINTS_TIER_4_VAL * Math.pow(0.25, scale)); // 400->100
   }
   // <100ms: zawsze 400
-  return 400;
+  return POINTS_TIER_4_VAL;
 }

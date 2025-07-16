@@ -5,6 +5,7 @@ import DonateAlert from "./DonateAlert";
 import { AlertTypes } from "@/types";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import GiftAlert from "./GiftAlert";
+import { ALERT_CONFIG } from "@/const/config";
 
 const AlertBox = () => {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -29,7 +30,7 @@ const AlertBox = () => {
 
     hideTimeoutRef.current = setTimeout(() => {
       setAlertVisible(false);
-    }, 5000); // alert visible for 10s
+    }, ALERT_CONFIG.VISIBLE_DURATION); // alert visible for 10s
   };
 
   // Calculates delay based on current alert levels
@@ -40,14 +41,13 @@ const AlertBox = () => {
       totalLevel += getAlertLevel(type);
     });
 
-    const minDelay = 5000; // minimum 5s between alerts
-    const maxDelay = 60000; // maximum 60s between alerts (base)
+    const { MIN_DELAY, MAX_DELAY, LEVEL_FACTOR, RANDOM_DELAY } = ALERT_CONFIG;
     const levelFactor = Math.max(1, totalLevel);
 
     // Higher totalLevel -> shorter delay but never below minDelay
     return Math.max(
-      minDelay,
-      maxDelay - levelFactor * 4500 + getRandomInt(0, 5000)
+      MIN_DELAY,
+      MAX_DELAY - levelFactor * LEVEL_FACTOR + getRandomInt(0, RANDOM_DELAY)
     );
   };
 

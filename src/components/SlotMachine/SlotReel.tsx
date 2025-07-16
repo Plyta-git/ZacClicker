@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
+import { SLOT_MACHINE_CONFIG } from "@/const/config";
 
 interface SlotReelProps {
   isSpinning: boolean;
@@ -113,7 +114,7 @@ const SlotReel: React.FC<SlotReelProps> = ({
         autoplayPlugin.stop();
         setTimeout(() => {
           handleSpinComplete();
-        }, 200);
+        }, SLOT_MACHINE_CONFIG.REEL_STOP_DELAY);
       }, 2000);
     }
   }, [spinTrigger]);

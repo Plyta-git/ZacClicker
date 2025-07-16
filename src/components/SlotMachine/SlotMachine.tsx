@@ -2,6 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import SlotReel from "./SlotReel";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import useSound from "use-sound";
+import { SLOT_MACHINE_CONFIG } from "@/const/config";
+
+const { SLIDES_COUNT, WIN_CHANCE, WIN_POINTS, SPIN_DURATION } =
+  SLOT_MACHINE_CONFIG;
 
 const generateRandomSlides = (length: number): number[] => {
   const result: number[] = [];
@@ -13,11 +17,15 @@ const generateRandomSlides = (length: number): number[] => {
 };
 
 const generateSliders = () => {
-  const slides1 = generateRandomSlides(10);
+  const slides1 = generateRandomSlides(SLIDES_COUNT);
   const slides2 =
-    Math.floor(Math.random() * 10) >= 5 ? slides1 : generateRandomSlides(10);
+    Math.floor(Math.random() * 10) >= WIN_CHANCE
+      ? slides1
+      : generateRandomSlides(SLIDES_COUNT);
   const slides3 =
-    Math.floor(Math.random() * 10) > 5 ? slides1 : generateRandomSlides(10);
+    Math.floor(Math.random() * 10) > WIN_CHANCE
+      ? slides1
+      : generateRandomSlides(SLIDES_COUNT);
 
   return [slides1, slides2, slides3];
 };
@@ -33,14 +41,12 @@ const SlotMachine = () => {
   const [playSpinSound] = useSound("/Spin.wav", { volume: 0.3 });
   const [playWinSound] = useSound("/BIGWIN.mp3", { volume: 1 });
 
-  useEffect(() => {
-    console.log(sliders);
-  }, [sliders]);
+  useEffect(() => {}, [sliders]);
 
   useEffect(() => {
     if (results.includes(null)) return;
     if (results.every((val) => val === results[0])) {
-      addPoints(200);
+      addPoints(WIN_POINTS);
       playWinSound();
     }
   }, [results]);
@@ -64,8 +70,8 @@ const SlotMachine = () => {
     setResults([null, null, null]);
     setCompletedReels(0);
     setSpinTrigger((prev) => prev + 1);
-    setTimeout(() => setSliders(generateSliders), 1000);
-  }, [isSpinning]);
+    setTimeout(() => setSliders(generateSliders), SPIN_DURATION);
+  }, [isSpinning, playSpinSound]);
 
   useEffect(() => {
     if (completedReels === 3) {
@@ -82,18 +88,21 @@ const SlotMachine = () => {
           isSpinning={isSpinning}
           onSpinComplete={(result) => handleReelComplete(0, result)}
           spinTrigger={spinTrigger}
+          key={0}
         />
         <SlotReel
           slides={sliders[1]}
           isSpinning={isSpinning}
           onSpinComplete={(result) => handleReelComplete(1, result)}
           spinTrigger={spinTrigger}
+          key={1}
         />
         <SlotReel
           slides={sliders[2]}
           isSpinning={isSpinning}
           onSpinComplete={(result) => handleReelComplete(2, result)}
           spinTrigger={spinTrigger}
+          key={2}
         />
       </div>
       <button

@@ -2,6 +2,8 @@ import items from "@/const/items";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { ItemType } from "@/types";
 import useSound from "use-sound";
+import { useItemDiscovery } from "@/hooks/useItemDiscovery";
+import { STORE_CONFIG } from "@/const/config";
 
 const Item: React.FC<{
   item: ItemType;
@@ -10,11 +12,11 @@ const Item: React.FC<{
   isBlurred: boolean;
 }> = ({ item, isAvailable, canBuy, isBlurred }) => {
   const gameStore = useGameStore((store) => store);
-  const { getPrice, eq, buyItem } = gameStore;
+  const { getPrice, itemCounts, buyItem } = gameStore;
   const itemPrice = getPrice(item);
   const [playBuyItemSound] = useSound("/buyitem.wav", { volume: 0.7 });
 
-  if (item.oneTimeUse && eq.has(item.id)) return;
+  if (item.oneTimeUse && itemCounts.has(item.id)) return null;
   return (
     <div
       onClick={() => canBuy && !isBlurred && buyItem(item, playBuyItemSound)}
@@ -48,47 +50,23 @@ const Item: React.FC<{
           <div className="text-neutral-400">{itemPrice} zakoli</div>
         </div>
       </div>
-      <div className="flex justify-end">{eq.get(item.id) ?? 0}</div>
+      <div className="flex justify-end">{itemCounts.get(item.id) ?? 0}</div>
     </div>
   );
 };
 
 const Store = () => {
   const store = useGameStore((s) => s);
-  const { discoveredItems, discoverItem, availableItems, markItemAvailable } =
-    store;
-  // Wywołaj discoverItem dla itemów, które właśnie spełniają unlockCondition
-  items.forEach((item) => {
-    if (
-      item.unlockCondition &&
-      item.unlockCondition(store) &&
-      !discoveredItems.has(item.id)
-    ) {
-      discoverItem(item.id);
-    }
-    // Dodaj do discoveredItems itemy bez unlockCondition
-    if (!item.unlockCondition && !discoveredItems.has(item.id)) {
-      discoverItem(item.id);
-    }
-  });
-  // Oznaczaj item jako available, jeśli masz >=60% punktów na niego
-  items.forEach((item) => {
-    const itemPrice = store.getPrice(item);
-    const minPoints = itemPrice * 0.6;
-    if (
-      discoveredItems.has(item.id) &&
-      store.playerPoints >= minPoints &&
-      !availableItems.has(item.id)
-    ) {
-      markItemAvailable(item.id);
-    }
-  });
+  const { discoveredItems, availableItems } = store;
+  useItemDiscovery();
+
   const visibleItems = items.filter((item) => discoveredItems.has(item.id));
+
   return (
     <div className="rounded-none h-full">
       {visibleItems.map((item, idx) => {
         const itemPrice = store.getPrice(item);
-        const minPoints = itemPrice * 0.6;
+        const minPoints = itemPrice * STORE_CONFIG.MIN_POINTS_RATIO;
         const canBuy = store.playerPoints >= itemPrice;
         const isAvailable =
           availableItems.has(item.id) || store.playerPoints >= minPoints;

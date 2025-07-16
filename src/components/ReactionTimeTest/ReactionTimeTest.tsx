@@ -4,13 +4,13 @@ import { useReactionTimeTest } from "./useReactionTimeTest";
 const getBgColor = (phase: string) => {
   switch (phase) {
     case "waiting":
-      return "bg-red-500";
+      return "bg-reaction-waiting";
     case "ready":
-      return "bg-green-500";
+      return "bg-reaction-ready";
     case "result":
     case "cooldown":
     default:
-      return "bg-gray-500";
+      return "bg-reaction-result";
   }
 };
 

@@ -1,5 +1,6 @@
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { useState, useEffect } from "react";
+import { SHOW_EMOTE_CONFIG } from "@/const/config";
 
 type EmoteType = {
   id: number;
@@ -38,13 +39,13 @@ const Emote = ({ src, left, top, leaving }: EmoteType) => {
 export default function ShowEmote() {
   const [emotes, setEmotes] = useState<EmoteType[]>([]);
   const showEmotes = useGameStore((store) => store.activeEvents.showemotes);
-  const eq = useGameStore((store) => store.eq);
-  console.log(eq);
   useEffect(() => {
     let timer: NodeJS.Timeout;
+    const { DELAY_MIN, DELAY_RANDOM, LEAVING_TIMEOUT, REMOVE_TIMEOUT } =
+      SHOW_EMOTE_CONFIG;
 
     function scheduleNext() {
-      const delay = 2000 + Math.random() * 10000;
+      const delay = DELAY_MIN + Math.random() * DELAY_RANDOM;
       timer = setTimeout(() => {
         spawnEmote();
         scheduleNext();
@@ -68,11 +69,11 @@ export default function ShowEmote() {
               : e
           )
         );
-      }, 2000);
+      }, LEAVING_TIMEOUT);
 
       setTimeout(() => {
         setEmotes((list) => list.filter((e) => e.id !== id));
-      }, 3000);
+      }, REMOVE_TIMEOUT);
     }
 
     scheduleNext();

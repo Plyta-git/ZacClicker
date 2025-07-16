@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { getRandomDelay, getPointsForReaction } from "./reactionTimeUtils";
+import { REACTION_TEST_CONFIG } from "@/const/config";
 
-const COOLDOWN_MS = 60 * 1000; // 1 minuta
-const LAST_TEST_KEY = "reaction_time_last_test";
+const { COOLDOWN_MS, LAST_TEST_KEY } = REACTION_TEST_CONFIG;
 
 export type ReactionPhase =
   | "idle"
@@ -120,14 +120,18 @@ export function useReactionTimeTest(): ReactionTimeTestState {
     startTest();
   }, [startTest, startCooldown]);
 
-  // Sprawdza cooldown na starcie.
+  // Wrap in ErrorBoundary if needed, but for hook, add try-catch in effects.
+  // Optimize useEffect deps.
   useEffect(() => {
-    const left = getCooldownLeft();
-    if (left > 0) {
-      startCooldown(left);
+    try {
+      const left = getCooldownLeft();
+      if (left > 0) {
+        startCooldown(left);
+      }
+    } catch (err) {
+      console.error("Cooldown error:", err);
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [startCooldown]);
 
   return {
     phase,

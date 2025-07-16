@@ -1,10 +1,7 @@
 import { useEffect, useRef } from "react";
+import { TTS_CONFIG } from "@/const/config";
 
-const SETTINGS = {
-  voice: "Jacek",
-  volume: 1.0,
-  rate: 1.5, // Dodana prędkość odtwarzania
-};
+const { VOICE, VOLUME, RATE } = TTS_CONFIG;
 
 const useSpeak = (text: string) => {
   const effectRunRef = useRef(false);
@@ -12,12 +9,12 @@ const useSpeak = (text: string) => {
     if (!effectRunRef.current) {
       effectRunRef.current = true;
       const audio = document.createElement("audio");
-      audio.volume = SETTINGS.volume;
+      audio.volume = VOLUME;
       const ttsAPI = new URL("https://api.streamelements.com/kappa/v2/speech");
-      ttsAPI.searchParams.append("voice", SETTINGS.voice);
+      ttsAPI.searchParams.append("voice", VOICE);
       ttsAPI.searchParams.append("text", text);
       audio.src = ttsAPI.toString();
-      audio.playbackRate = 1.4;
+      audio.playbackRate = RATE;
       document.body.appendChild(audio);
       audio.play();
       audio.addEventListener("ended", () => audio.remove());

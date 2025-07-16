@@ -1,5 +1,6 @@
 import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { useState, useEffect, useRef } from "react";
+import { GUCCI_ARMIA_CONFIG } from "@/const/config";
 
 type EmoteProps = {
   id: number;
@@ -9,14 +10,22 @@ type EmoteProps = {
 const Emote = ({ id, src }: EmoteProps) => {
   const [position, setPosition] = useState({ left: 50, top: 50 });
   const velocity = useRef({ dx: 0, dy: 0 });
+  const {
+    SPEED_MIN,
+    SPEED_RANDOM,
+    WALL_LEFT,
+    WALL_RIGHT,
+    WALL_TOP,
+    WALL_BOTTOM,
+  } = GUCCI_ARMIA_CONFIG;
 
   useEffect(() => {
     setPosition({
-      left: Math.random() * 90,
-      top: Math.random() * 90,
+      left: Math.random() * (WALL_RIGHT - 10),
+      top: Math.random() * (WALL_BOTTOM - 10),
     });
 
-    const speed = 0.15 + Math.random() * 0.05;
+    const speed = SPEED_MIN + Math.random() * SPEED_RANDOM;
     const angle = Math.random() * 2 * Math.PI;
     velocity.current = {
       dx: Math.cos(angle) * speed,
@@ -29,12 +38,12 @@ const Emote = ({ id, src }: EmoteProps) => {
         let newLeft = pos.left + velocity.current.dx;
         let newTop = pos.top + velocity.current.dy;
 
-        if (newLeft <= 0 || newLeft >= 95) {
+        if (newLeft <= WALL_LEFT || newLeft >= WALL_RIGHT) {
           console.log(`Emote ${id} hit horizontal wall`);
           velocity.current.dx *= -1;
           newLeft = pos.left + velocity.current.dx;
         }
-        if (newTop <= 0 || newTop >= 95) {
+        if (newTop <= WALL_TOP || newTop >= WALL_BOTTOM) {
           console.log(`Emote ${id} hit vertical wall`);
           velocity.current.dy *= -1;
           newTop = pos.top + velocity.current.dy;
@@ -67,7 +76,7 @@ const Emote = ({ id, src }: EmoteProps) => {
 };
 
 export default function GucciArmia() {
-  const gucciCount = useGameStore((store) => store.eq.get(2) || 0);
+  const gucciCount = useGameStore((store) => store.itemCounts.get(2) || 0);
   const [emotes, setEmotes] = useState<{ id: number }[]>([]);
 
   useEffect(() => {

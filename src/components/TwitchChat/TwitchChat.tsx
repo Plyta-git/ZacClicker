@@ -1,6 +1,13 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import tmi from "tmi.js";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
+import { TWITCH_CHAT_CONFIG } from "@/const/config";
 
 type EmoteUrl = {
   size: "1x" | "2x" | "3x" | "4x";
@@ -85,12 +92,16 @@ const MessageBox = ({
   color,
   emotes,
 }: Omit<ChatMessage, "id"> & { emotes: EmoteMap }) => {
+  const memoizedParse = useCallback(
+    (text: string) => parseMessageWithEmotes(text, emotes),
+    [emotes]
+  );
   return (
     <div className="mb-1 break-words">
       <span style={{ color: color || "#FFFFFF", fontWeight: "bold" }}>
         {user}
       </span>
-      : {parseMessageWithEmotes(text, emotes)}
+      : {memoizedParse(text)}
     </div>
   );
 };
@@ -104,14 +115,22 @@ client.connect().catch(console.error);
 const TwitchChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [emotes, setEmotes] = useState<EmoteMap>(new Map());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const prevScrollHeightRef = useRef<number | null>(null);
-  const MAX_MESSAGES = 100;
+  const { MAX_MESSAGES, SCROLL_THRESHOLD_RATIO } = TWITCH_CHAT_CONFIG;
 
   useEffect(() => {
     const loadEmotes = async () => {
-      const emoteMap = await fetchEmotes();
-      setEmotes(emoteMap);
+      try {
+        const emoteMap = await fetchEmotes();
+        setEmotes(emoteMap);
+      } catch (err: unknown) {
+        setError(`Failed to load emotes: ${(err as Error).message}`);
+      } finally {
+        setLoading(false);
+      }
     };
     loadEmotes();
   }, []);
@@ -156,7 +175,7 @@ const TwitchChat = () => {
         const scrollBottomBeforeUpdate = scrollTop + clientHeight;
 
         // Threshold is 10% of the visible height
-        const threshold = clientHeight * 0.1;
+        const threshold = clientHeight * SCROLL_THRESHOLD_RATIO;
 
         // If user was within the threshold of the bottom before the update, auto-scroll
         if (scrollBottomBeforeUpdate >= scrollHeightBeforeUpdate - threshold) {
@@ -167,6 +186,9 @@ const TwitchChat = () => {
       prevScrollHeightRef.current = chatContainer.scrollHeight;
     }
   }, [messages]);
+
+  if (loading) return <div>Loading chat...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div ref={chatContainerRef} className="h-full overflow-y-auto p-2">

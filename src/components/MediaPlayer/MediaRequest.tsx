@@ -3,6 +3,7 @@ import useGameStore from "@/hooks/useGameStore/useGameStore";
 import { getRandomNumber } from "@/hooks/utils";
 import { useState, useRef } from "react";
 import ReactPlayer from "react-player";
+import { MEDIA_PLAYER_CONFIG } from "@/const/config";
 
 const MediaRequest = () => {
   const [currentIndex, setCurrentIndex] = useState(
@@ -35,7 +36,10 @@ const MediaRequest = () => {
     if (duration > 0) {
       const { playedSeconds } = state;
       const progressRatio = playedSeconds / duration;
-      if (progressRatio > 0.98 && !endedFlagRef.current) {
+      if (
+        progressRatio > MEDIA_PLAYER_CONFIG.ENDED_FLAG_THRESHOLD &&
+        !endedFlagRef.current
+      ) {
         endedFlagRef.current = true;
         handleVideoEnd();
       }
