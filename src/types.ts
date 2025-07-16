@@ -1,13 +1,14 @@
-import { StoreActions } from "./hooks/useGameStore/useGameStore";
+import { StoreActions, StoreState } from "./hooks/useGameStore/useGameStore";
 
 export type ItemType = {
   id: number;
   name: string;
   deafulfPrice: number;
   growthFactor: number;
-  effect: (gameStore: StoreActions) => void;
+  effect: (gameStore: StoreActions & StoreState) => void;
   img: string;
   oneTimeUse?: boolean;
+  unlockCondition?: (store: StoreState) => boolean;
 };
 
 export enum AlertTypes {
@@ -23,4 +24,6 @@ export enum EventTypes {
   SongRequest = "songrequest",
   ShowEmotes = "showemotes",
   Slots = "slots",
+  ReactionTimeTest = "reactiontimetest",
+  EmoteChat = "emotechat",
 }

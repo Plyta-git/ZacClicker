@@ -38,6 +38,8 @@ const Emote = ({ src, left, top, leaving }: EmoteType) => {
 export default function ShowEmote() {
   const [emotes, setEmotes] = useState<EmoteType[]>([]);
   const showEmotes = useGameStore((store) => store.activeEvents.showemotes);
+  const eq = useGameStore((store) => store.eq);
+  console.log(eq);
   useEffect(() => {
     let timer: NodeJS.Timeout;
 

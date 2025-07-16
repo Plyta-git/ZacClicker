@@ -16,8 +16,21 @@ const AlertBox = () => {
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
+    const getAlertLevel = useGameStore.getState().getAlertLevel;
     const showRandomAlert = () => {
-      const randomDelay = getRandomInt(10000, 50000);
+      // Wyznacz najczęstszy poziom alertu (lub sumę poziomów)
+      let totalLevel = 0;
+      activeAlerts.forEach((type) => {
+        totalLevel += getAlertLevel(type);
+      });
+      // Im wyższy totalLevel, tym krótszy delay (min 3s, max 50s)
+      const minDelay = 3000;
+      const maxDelay = 50000;
+      const levelFactor = Math.max(1, totalLevel);
+      const randomDelay = Math.max(
+        minDelay,
+        maxDelay - levelFactor * 4000 + getRandomInt(0, 5000)
+      );
       timeoutId = setTimeout(() => {
         setAlertType(activeAlerts[getRandomInt(0, activeAlerts.length - 1)]);
         setAlertVisible(true);

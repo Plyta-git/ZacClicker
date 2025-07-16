@@ -4,7 +4,7 @@ import { getRandomNumber } from "@/hooks/utils";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 
-function MediaRequest() {
+const MediaRequest = () => {
   const [currentIndex, setCurrentIndex] = useState(
     getRandomNumber(MediaRequestURLs.length)
   );
@@ -55,6 +55,6 @@ function MediaRequest() {
       />
     </div>
   );
-}
+};
 
 export default MediaRequest;

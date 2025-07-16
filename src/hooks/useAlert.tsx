@@ -27,7 +27,7 @@ const getAlertConfig: Record<AlertTypes, AlertConfig> = {
     points: 15,
   },
   [AlertTypes.Gift]: {
-    sound: "/donate.wav",
+    sound: "/sub.wav",
     volume: 0.2,
     points: 15,
   },
@@ -45,12 +45,20 @@ const getAlertConfig: Record<AlertTypes, AlertConfig> = {
 
 const useAlert = (alertType: AlertTypes) => {
   const addPoints = useGameStore((store) => store.addPoints);
-  const { sound, volume, points } = getAlertConfig[alertType];
+  const getAlertLevel = useGameStore((store) => store.getAlertLevel);
+  const getAlertReward = useGameStore((store) => store.getAlertReward);
+  const alertLevel = getAlertLevel(alertType);
+  const { sound, volume } = getAlertConfig[alertType];
   const [playSound] = useSound(sound, { volume });
   const memoizedNick = useMemo(getRandomNickName, []);
   const memoizedMessage = useMemo(getRandomDonateMessage, []);
-  const memoizedAmount = useMemo(() => getRandomDonateAmount(1, 10), []);
+  // Kwota rośnie z poziomem alertu
+  const memoizedAmount = useMemo(
+    () => getRandomDonateAmount(1 + alertLevel, 10 + alertLevel * 5),
+    [alertLevel]
+  );
   const hasAdded = useRef(false);
+
   const filteredMessage = useMemo(() => {
     if (alertType === AlertTypes.Donate && memoizedMessage) {
       const httpsIndex = memoizedMessage.indexOf("https");
@@ -63,18 +71,18 @@ const useAlert = (alertType: AlertTypes) => {
   }, [alertType, memoizedMessage]);
 
   useSpeak(filteredMessage);
-
   useEffect(() => {
     playSound();
     if (!hasAdded.current) {
-      addPoints(alertType === AlertTypes.Follow ? points : memoizedAmount * 10);
+      addPoints(getAlertReward(alertType));
       hasAdded.current = true;
     }
-  }, [addPoints, playSound, points, memoizedAmount]);
+  }, [addPoints, playSound, getAlertReward, alertType]);
   return {
     nickname: memoizedNick,
     amount: memoizedAmount,
     message: memoizedMessage,
+    alertLevel,
   };
 };
 

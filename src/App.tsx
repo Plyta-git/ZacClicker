@@ -6,6 +6,15 @@ import Store from "./components/Store/Store";
 import SlotMachine from "./components/SlotMachine/SlotMachine";
 import ZacInfo from "./components/ZacBox/ZacInfo";
 import ZacButton from "./components/ZacBox/ZacButton";
+import GucciArmia from "./components/ShowEmote/GucciArmia";
+import TwitchChat from "./components/TwitchChat/TwitchChat";
+import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
+
+//!todo:
+// chat sabotuje
+// banowanie wiadomości
+// human benchmark
+// sponsorki
 
 function App() {
   console.log(
@@ -50,7 +59,9 @@ function App() {
       <MediaRequest />
       <SongRequest />
       <ShowEmote />
+      <GucciArmia />
       <SlotMachine />
+      <ReactionTimeTest />
       <div className="w-1/5  bg-sidebar-bg border-r-2 border-color-border  ">
         <Store />
       </div>
@@ -60,7 +71,9 @@ function App() {
           <ZacButton />
         </div>
       </div>
-      <div className="w-1/5  bg-chat border-color-border border-l-2  "></div>
+      <div className="w-1/5 h-lvh bg-chat border-color-border border-l-2  ">
+        <TwitchChat />
+      </div>
     </div>
   );
 }

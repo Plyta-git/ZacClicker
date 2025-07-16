@@ -9,6 +9,9 @@ export type StoreState = {
   activeAlerts: AlertTypes[];
   activeEvents: Record<EventTypes, boolean>;
   skips: number;
+  discoveredItems: Set<number>;
+  availableItems: Set<number>;
+  alertLevels: Map<AlertTypes, number>;
 };
 
 export type StoreActions = {
@@ -24,6 +27,11 @@ export type StoreActions = {
   buyItem: (item: ItemType, callback: () => void) => void;
   addSkip: (qty: number) => void;
   removeSkip: (qty: number) => void;
+  discoverItem: (id: number) => void;
+  markItemAvailable: (id: number) => void;
+  increaseAlertLevel: (type: AlertTypes) => void;
+  getAlertLevel: (type: AlertTypes) => number;
+  getAlertReward: (type: AlertTypes) => number;
 };
 
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
@@ -38,7 +46,12 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     [EventTypes.SongRequest]: false,
     [EventTypes.ShowEmotes]: false,
     [EventTypes.Slots]: false,
+    [EventTypes.ReactionTimeTest]: false,
+    [EventTypes.EmoteChat]: false,
   },
+  discoveredItems: new Set<number>(),
+  availableItems: new Set<number>(),
+  alertLevels: new Map<AlertTypes, number>(),
   addPointsPSec: (qty: number) =>
     set((state) => ({
       pointsPSec: state.pointsPSec + qty,
@@ -105,6 +118,39 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
         [event]: false,
       },
     }));
+  },
+  discoverItem: (id: number) => {
+    set((state) => {
+      if (state.discoveredItems.has(id)) return {};
+      const newSet = new Set(state.discoveredItems);
+      newSet.add(id);
+      return { discoveredItems: newSet };
+    });
+  },
+  markItemAvailable: (id: number) => {
+    set((state) => {
+      if (state.availableItems.has(id)) return {};
+      const newSet = new Set(state.availableItems);
+      newSet.add(id);
+      return { availableItems: newSet };
+    });
+  },
+  increaseAlertLevel: (type: AlertTypes) => {
+    set((state) => {
+      const newMap = new Map(state.alertLevels);
+      const current = newMap.get(type) || 0;
+      newMap.set(type, current + 1);
+      return { alertLevels: newMap };
+    });
+  },
+  getAlertLevel: (type: AlertTypes) => {
+    return get().alertLevels.get(type) || 0;
+  },
+  getAlertReward: (type: AlertTypes) => {
+    // Przykład: bazowa nagroda * (1 + 0.5 * poziom)
+    const base = 15;
+    const lvl = get().alertLevels.get(type) || 0;
+    return Math.round(base * (1 + 0.5 * lvl));
   },
 }));
 
