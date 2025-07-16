@@ -19,27 +19,27 @@ const getAlertConfig: Record<AlertTypes, AlertConfig> = {
   [AlertTypes.Donate]: {
     sound: "/donate.wav",
     volume: 0.2,
-    points: 15,
+    points: 100,
   },
   [AlertTypes.Follow]: {
     sound: "/donate.wav",
     volume: 0.2,
-    points: 15,
+    points: 100,
   },
   [AlertTypes.Gift]: {
     sound: "/sub.wav",
     volume: 0.2,
-    points: 15,
+    points: 100,
   },
   [AlertTypes.Sub]: {
     sound: "/sub.wav",
     volume: 0.2,
-    points: 15,
+    points: 100,
   },
   [AlertTypes.Null]: {
     sound: "/donate.wav",
     volume: 0.2,
-    points: 15,
+    points: 100,
   },
 };
 

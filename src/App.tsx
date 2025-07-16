@@ -13,8 +13,11 @@ import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
 //!todo:
 // chat sabotuje
 // banowanie wiadomości
-// human benchmark
+// human benchmark [done]
 // sponsorki
+// hacki
+// mammon i viewboty
+// aimlab
 
 function App() {
   console.log(

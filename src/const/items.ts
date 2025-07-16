@@ -7,11 +7,7 @@ import { AlertTypes, EventTypes } from "@/types";
  * @param base - bazowa liczba punktów za pierwszy zakup
  * @param growth - współczynnik wzrostu
  */
-function getGucciArmiaPointsPSec(
-  owned: number,
-  base = 2,
-  growth = 1.5
-): number {
+function getPointsPSec(owned: number, base = 2, growth = 1.5): number {
   return Math.round(base * Math.pow(growth, owned));
 }
 
@@ -20,18 +16,22 @@ const items = [
     id: 1,
     name: "Większe zakole",
     deafulfPrice: 10,
-    growthFactor: 1.7,
-    effect: (gameStore: StoreActions) => gameStore.addPointsMultiplier(10),
+    growthFactor: 1.9,
+    effect: (gameStore: StoreActions & StoreState) => {
+      const owned = gameStore.eq.get(1) || 0;
+      const toAdd = getPointsPSec(owned, 1, 1.1);
+      gameStore.addPointsMultiplier(toAdd);
+    },
     img: "/zac2.jpg",
   },
   {
     id: 2,
     name: "Gucci Armia",
     deafulfPrice: 25,
-    growthFactor: 1.5,
+    growthFactor: 1.9,
     effect: (gameStore: StoreActions & StoreState) => {
       const owned = gameStore.eq.get(2) || 0;
-      const toAdd = getGucciArmiaPointsPSec(owned, 2, 1.5);
+      const toAdd = getPointsPSec(owned, 2, 1.1);
       gameStore.addPointsPSec(toAdd);
     },
     img: "/gucciKiedyFortnajt.gif",
@@ -63,7 +63,7 @@ const items = [
   {
     id: 4,
     name: "Donate",
-    deafulfPrice: 400,
+    deafulfPrice: 1500,
     growthFactor: 2.2,
     effect: (gameStore: StoreActions) => {
       gameStore.addAlert(AlertTypes.Donate);
@@ -87,7 +87,7 @@ const items = [
   {
     id: 8,
     name: "Song Request",
-    deafulfPrice: 2000,
+    deafulfPrice: 3000,
     growthFactor: 2.5,
     oneTimeUse: true,
     effect: (gameStore: StoreActions) => {
@@ -167,5 +167,3 @@ const items = [
 ];
 
 export default items;
-
-//TO DO chowanie elementów (maska z zaleznoscia)

@@ -47,6 +47,9 @@ function SongRequest() {
           width="100%"
           height="0"
           url={SongRequestURLs[currentIndex].url}
+          onEnded={() =>
+            setCurrentIndex(getRandomNumber(SongRequestURLs.length))
+          }
           config={{
             youtube: {
               playerVars: {
