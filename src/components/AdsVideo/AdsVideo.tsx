@@ -14,15 +14,25 @@ const AdsVideo = () => {
   const displayAds = useGameStore(
     (state) => state.activeEvents[EventTypes.Ads]
   );
+  const item14Count = useGameStore((state) => state.itemCounts.get(14) || 0);
 
   const getRandomInt = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
   const scheduleNextAppearance = () => {
-    const delay = getRandomInt(
-      ADS_VIDEO_CONFIG.INTERVAL_MIN,
-      ADS_VIDEO_CONFIG.INTERVAL_MAX
-    );
+    // Calculate dynamic interval based on item 14 count
+    const count = Math.min(item14Count, 5); // Cap at 5 for calculation
+    const baseMin = 60000; // 60s
+    const baseMax = 90000; // 90s
+    const target = 15000; // 15s
+
+    // Linear interpolation
+    const intervalMin =
+      count <= 1 ? baseMin : baseMin - ((baseMin - target) / 4) * (count - 1);
+    const intervalMax =
+      count <= 1 ? baseMax : baseMax - ((baseMax - target) / 4) * (count - 1);
+
+    const delay = getRandomInt(intervalMin, intervalMax);
 
     timerRef.current = setTimeout(() => {
       const idx = getRandomInt(0, AdsVideoURLs.length - 1);
@@ -35,14 +45,14 @@ const AdsVideo = () => {
     }, delay);
   };
 
-  // Start on mount
+  // Start on mount & when item count changes
   useEffect(() => {
     scheduleNextAppearance();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [item14Count]);
 
   const handleVideoFinish = () => {
     setVisible(false);

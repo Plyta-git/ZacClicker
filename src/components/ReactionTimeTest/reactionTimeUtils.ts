@@ -27,18 +27,17 @@ export function getPointsForReaction(ms: number): number {
   if (ms >= POINTS_TIER_2_MS)
     return Math.round(
       POINTS_TIER_2_VAL +
-        ((POINTS_TIER_1_VAL - POINTS_TIER_2_VAL) * (ms - POINTS_TIER_2_MS)) /
-          100
+        ((POINTS_TIER_1_VAL - POINTS_TIER_2_VAL) * (ms - POINTS_TIER_2_MS)) / 10
     ); // 200-299ms: 20->5
   if (ms >= POINTS_TIER_3_MS) {
     // 150-199ms: 100->20 (nieliniowo)
     // Skala wykładnicza
-    const scale = (ms - POINTS_TIER_3_MS) / 50; // 0..1
+    const scale = (ms - POINTS_TIER_3_MS) / 5; // 0..1
     return Math.round(POINTS_TIER_3_VAL * Math.pow(0.2, scale)); // 100->20
   }
   if (ms >= POINTS_TIER_4_MS) {
     // 100-149ms: 400->100 (nieliniowo)
-    const scale = (ms - POINTS_TIER_4_MS) / 50; // 0..1
+    const scale = (ms - POINTS_TIER_4_MS) / 5; // 0..1
     return Math.round(POINTS_TIER_4_VAL * Math.pow(0.25, scale)); // 400->100
   }
   // <100ms: zawsze 400

@@ -11,18 +11,24 @@ import TwitchChat from "./components/TwitchChat/TwitchChat";
 import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
 import DevStats from "./components/DevPanel/DevStats";
 import MediaRequest from "./components/MediaPlayer/MediaRequest";
+import WttgHack from "./components/WttgHack/WttgHack";
 
 /* TODO:
 - chat sabotuje
 - banowanie wiadomości
-- hacki
+- jakieś quizy czasowe na prawo A B C D
 
 - human benchmark [done]
+- sponsorki [done]
+- hacki jak w wttg [todo]
 
-- sponsorki [todo]
 - mammon i viewboty [todo]
 - aimlab [todo]
 - podmienienie ikonek [todo]
+
+- w sklepie można kupić fragment kodu jak w wttg
+- jak wykupisz 6 fragmentów kodu to pojawia się opcja wpisania kodu
+- po wpisaniu kodu gra się kończy
 */
 
 function App() {
@@ -37,6 +43,7 @@ function App() {
       <SlotMachine />
       <ReactionTimeTest />
       <DevStats />
+      <WttgHack />
       <div className="w-1/5  bg-sidebar-bg border-r-2 border-color-border  ">
         <Store />
       </div>
