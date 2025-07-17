@@ -8,20 +8,18 @@ import GiftAlert from "./GiftAlert";
 import { ALERT_CONFIG } from "@/const/config";
 
 const AlertBox = () => {
+  const activeAlerts = useGameStore((store) => store.activeAlerts);
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertTypes | null>(null);
-  const activeAlerts = useGameStore((store) => store.activeAlerts);
 
   const showTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const prevAlertsCountRef = useRef<number>(activeAlerts.length);
 
   const getRandomInt = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
-  // Helper responsible for displaying alert for a fixed period
   const showAlert = (type: AlertTypes) => {
-    // Clear previous hide timer so it will not interfere with the new alert
     if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
     }
@@ -76,17 +74,6 @@ const AlertBox = () => {
     };
   }, [activeAlerts]);
 
-  // Immediately display a newly purchased alert
-  useEffect(() => {
-    if (activeAlerts.length > prevAlertsCountRef.current) {
-      const newType = activeAlerts[activeAlerts.length - 1];
-      showAlert(newType);
-      // reschedule random timer from this moment
-      scheduleNextAlert();
-    }
-    prevAlertsCountRef.current = activeAlerts.length;
-  }, [activeAlerts]);
-
   let alertComponent = null;
   switch (alertType) {
     case AlertTypes.Follow:
@@ -106,7 +93,7 @@ const AlertBox = () => {
   }
 
   return (
-    <div className="w-1/4 h-1/6 absolute left-1/2 top-1/6 transform -translate-x-1/2 -translate-y-1/2 rounded-xl">
+    <div className=" w-1/4 h-1/6 absolute left-1/2 top-1/6 transform -translate-x-1/2 -translate-y-1/2 rounded-xl">
       {/* <DonateAlert /> */}
       {alertVisible && alertComponent}
     </div>

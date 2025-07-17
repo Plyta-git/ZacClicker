@@ -1,23 +1,18 @@
+import { useEffect } from "react";
 import useGameStore from "@/hooks/useGameStore/useGameStore";
-import { useEffect, useRef } from "react";
 
 const ZacInfo = () => {
   const points = useGameStore((store) => store.playerPoints);
   const pointsPSec = useGameStore((store) => store.pointsPSec);
-  const addPoints = useGameStore((store) => store.addPoints);
-  const pointsPSecRef = useRef(pointsPSec);
-
-  useEffect(() => {
-    pointsPSecRef.current = pointsPSec;
-  }, [pointsPSec]);
+  const tickPoints = useGameStore((store) => store.tickPoints);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      addPoints(pointsPSecRef.current);
+      tickPoints();
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [tickPoints]);
 
   return (
     <>

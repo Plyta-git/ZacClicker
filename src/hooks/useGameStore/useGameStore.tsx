@@ -13,6 +13,10 @@ export type StoreState = {
   discoveredItems: Set<number>;
   availableItems: Set<number>;
   alertLevels: Map<AlertTypes, number>;
+  // Developer statistics maps
+  itemSpent: Map<number, number>;
+  itemPointsPSec: Map<number, number>;
+  itemGenerated: Map<number, number>;
 };
 
 export type StoreActions = {
@@ -33,6 +37,10 @@ export type StoreActions = {
   increaseAlertLevel: (type: AlertTypes) => void;
   getAlertLevel: (type: AlertTypes) => number;
   getAlertReward: (type: AlertTypes) => number;
+  // Dev stats actions
+  addItemSpent: (id: number, amount: number) => void;
+  addItemPointsPSecContribution: (id: number, amount: number) => void;
+  tickPoints: () => void;
 };
 
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
@@ -53,10 +61,40 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   discoveredItems: new Set<number>(),
   availableItems: new Set<number>(),
   alertLevels: new Map<AlertTypes, number>(),
+  // dev stats initial maps
+  itemSpent: new Map<number, number>(),
+  itemPointsPSec: new Map<number, number>(),
+  itemGenerated: new Map<number, number>(),
   addPointsPSec: (qty: number) =>
     set((state) => ({
       pointsPSec: state.pointsPSec + qty,
     })),
+  // DEV: track spent per item
+  addItemSpent: (id, amount) =>
+    set((state) => {
+      const newMap = new Map(state.itemSpent);
+      newMap.set(id, (newMap.get(id) || 0) + amount);
+      return { itemSpent: newMap } as Partial<StoreState>;
+    }),
+  // DEV: track psec contribution per item
+  addItemPointsPSecContribution: (id, amount) =>
+    set((state) => {
+      const newMap = new Map(state.itemPointsPSec);
+      newMap.set(id, (newMap.get(id) || 0) + amount);
+      return { itemPointsPSec: newMap } as Partial<StoreState>;
+    }),
+  // DEV: tick each second, add points and accumulate generated
+  tickPoints: () =>
+    set((state) => {
+      const newGenerated = new Map(state.itemGenerated);
+      state.itemPointsPSec.forEach((psec, id) => {
+        newGenerated.set(id, (newGenerated.get(id) || 0) + psec);
+      });
+      return {
+        playerPoints: state.playerPoints + state.pointsPSec,
+        itemGenerated: newGenerated,
+      } as Partial<StoreState>;
+    }),
   /** @description Adds points to the player's total. */
   addPoints: (qty: number) =>
     set((state) => ({
@@ -93,16 +131,40 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     set({ activeAlerts: [...currentAlerts, alert] });
   },
   buyItem: (item: ItemType, callback: () => void) => {
-    const currentItemPrice = get().getPrice(item);
+    const price = get().getPrice(item);
     const playerPoints = get().playerPoints;
-    if (playerPoints >= currentItemPrice) {
+    if (playerPoints >= price) {
+      const pointsPSecBefore = get().pointsPSec;
       callback();
       item.effect(get());
-      get().decreasePoints(currentItemPrice);
-      const currentItemCount = get().itemCounts.get(item.id) || 0;
-      const newItemCounts = get().itemCounts;
-      newItemCounts.set(item.id, currentItemCount + 1);
-      set({ itemCounts: newItemCounts });
+      const pointsPSecAfter = get().pointsPSec;
+      const psecIncrease = pointsPSecAfter - pointsPSecBefore;
+
+      set((state) => {
+        // update counts
+        const newItemCounts = new Map(state.itemCounts);
+        newItemCounts.set(item.id, (newItemCounts.get(item.id) || 0) + 1);
+
+        // track spent
+        const newSpent = new Map(state.itemSpent);
+        newSpent.set(item.id, (newSpent.get(item.id) || 0) + price);
+
+        // track psec contribution
+        const newPSecMap = new Map(state.itemPointsPSec);
+        if (psecIncrease > 0) {
+          newPSecMap.set(
+            item.id,
+            (newPSecMap.get(item.id) || 0) + psecIncrease
+          );
+        }
+
+        return {
+          playerPoints: state.playerPoints - price,
+          itemCounts: newItemCounts,
+          itemSpent: newSpent,
+          itemPointsPSec: newPSecMap,
+        } as Partial<StoreState>;
+      });
     }
   },
   addEvent: (event: EventTypes) => {

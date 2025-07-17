@@ -9,6 +9,7 @@ import ZacButton from "./components/ZacBox/ZacButton";
 import GucciArmia from "./components/ShowEmote/GucciArmia";
 import TwitchChat from "./components/TwitchChat/TwitchChat";
 import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
+import DevStats from "./components/DevPanel/DevStats";
 
 /* TODO:
 - chat sabotuje
@@ -30,6 +31,7 @@ function App() {
       <GucciArmia />
       <SlotMachine />
       <ReactionTimeTest />
+      <DevStats />
       <div className="w-1/5  bg-sidebar-bg border-r-2 border-color-border  ">
         <Store />
       </div>

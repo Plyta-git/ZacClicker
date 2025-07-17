@@ -4,6 +4,17 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-chat: #18171b;
+  --color-color-border: #35353b;
+  --color-main-bg: #0f0e11;
+  --color-sidebar-bg: #18171b;
+  --color-main: #451192;
+  --color-main-active: #6e20e3;
+  --color-sidebar-acrive: #26262c;
+  --color-donate: #55b2a0;
+}
+
 @layer utilities {
   .embla {
     @apply max-w-3xl mx-auto;

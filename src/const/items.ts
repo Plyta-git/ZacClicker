@@ -39,12 +39,12 @@ const items = [
   {
     id: 3,
     name: "Follow Alert",
-    defaultPrice: 100,
+    defaultPrice: 10,
     growthFactor: 2.2,
     effect: (gameStore: StoreActions) => {
       gameStore.addAlert(AlertTypes.Follow);
       gameStore.increaseAlertLevel(AlertTypes.Follow);
-      gameStore.addPointsPSec(5);
+      //gameStore.addPointsPSec(5);
     },
     img: "/gucciKiedyFortnajt.gif",
   },

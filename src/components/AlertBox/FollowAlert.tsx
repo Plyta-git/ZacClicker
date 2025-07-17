@@ -6,7 +6,7 @@ const FollowAlert = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      nowy follow:<div className=" text-xl">{nickname}</div>
+      nowy follow:<div className=" text-donate text-xl">{nickname}</div>
     </div>
   );
 };
