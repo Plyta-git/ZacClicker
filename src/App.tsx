@@ -1,5 +1,5 @@
 import AlertBox from "./components/AlertBox/AlertBox";
-import MediaRequest from "./components/MediaPlayer/MediaRequest";
+import AdsVideo from "./components/AdsVideo/AdsVideo";
 import SongRequest from "./components/MediaPlayer/SongRequest";
 import ShowEmote from "./components/ShowEmote/ShowEmote";
 import Store from "./components/Store/Store";
@@ -10,21 +10,26 @@ import GucciArmia from "./components/ShowEmote/GucciArmia";
 import TwitchChat from "./components/TwitchChat/TwitchChat";
 import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
 import DevStats from "./components/DevPanel/DevStats";
+import MediaRequest from "./components/MediaPlayer/MediaRequest";
 
 /* TODO:
 - chat sabotuje
 - banowanie wiadomości
-- human benchmark [done]
-- sponsorki
 - hacki
-- mammon i viewboty
-- aimlab
+
+- human benchmark [done]
+
+- sponsorki [todo]
+- mammon i viewboty [todo]
+- aimlab [todo]
+- podmienienie ikonek [todo]
 */
 
 function App() {
   return (
     <div className=" select-none flex flex-row content-center justify-between min-h-svh w-full">
       <AlertBox />
+      <AdsVideo />
       <MediaRequest />
       <SongRequest />
       <ShowEmote />

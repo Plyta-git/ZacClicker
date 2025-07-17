@@ -40,6 +40,14 @@ export type StoreActions = {
   // Dev stats actions
   addItemSpent: (id: number, amount: number) => void;
   addItemPointsPSecContribution: (id: number, amount: number) => void;
+  /**
+   * Adds a given amount of points to the itemGenerated map for a specific source.
+   * Allows features (e.g. alert rewards) to record points that were generated
+   * outside the normal per-second tick so they show up in DEV STATS.
+   * @param id Numeric identifier of the source (can reuse item id or any custom id)
+   * @param amount How many points were generated
+   */
+  addGeneratedPoints: (id: number, amount: number) => void;
   tickPoints: () => void;
 };
 
@@ -57,6 +65,7 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     [EventTypes.Slots]: false,
     [EventTypes.ReactionTimeTest]: false,
     [EventTypes.EmoteChat]: false,
+    [EventTypes.Ads]: false,
   },
   discoveredItems: new Set<number>(),
   availableItems: new Set<number>(),
@@ -82,6 +91,13 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
       const newMap = new Map(state.itemPointsPSec);
       newMap.set(id, (newMap.get(id) || 0) + amount);
       return { itemPointsPSec: newMap } as Partial<StoreState>;
+    }),
+  // DEV: record points generated instantly by a given source (e.g. alerts)
+  addGeneratedPoints: (id, amount) =>
+    set((state) => {
+      const newGenerated = new Map(state.itemGenerated);
+      newGenerated.set(id, (newGenerated.get(id) || 0) + amount);
+      return { itemGenerated: newGenerated } as Partial<StoreState>;
     }),
   // DEV: tick each second, add points and accumulate generated
   tickPoints: () =>
@@ -112,10 +128,13 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     set((state) => ({
       playerPoints: state.playerPoints - qty,
     })),
-  buttonClick: () =>
+  buttonClick: () => {
+    const pointsMultiplier = get().pointsMultiplier;
+    get().addGeneratedPoints(1, pointsMultiplier);
     set((state) => ({
       playerPoints: state.playerPoints + 1 * state.pointsMultiplier,
-    })),
+    }));
+  },
   getPrice: (item: ItemType) => {
     const itemCount = get().itemCounts.get(item.id) ?? 0;
     return Math.ceil(

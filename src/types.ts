@@ -20,10 +20,16 @@ export enum AlertTypes {
 }
 
 export enum EventTypes {
-  MediaRequest = "mediarequest",
   SongRequest = "songrequest",
+  MediaRequest = "mediarequest",
   ShowEmotes = "showemotes",
   Slots = "slots",
   ReactionTimeTest = "reactiontimetest",
   EmoteChat = "emotechat",
+  Ads = "ads",
 }
+
+export type Alert = {
+  type: AlertTypes;
+  id: string;
+};

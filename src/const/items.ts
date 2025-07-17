@@ -7,7 +7,7 @@ import { AlertTypes, EventTypes } from "@/types";
  * @param base - bazowa liczba punktów za pierwszy zakup
  * @param growth - współczynnik wzrostu
  */
-function getPointsPSec(owned: number, base = 2, growth = 1.5): number {
+function getScalingPointsValue(owned: number, base = 2, growth = 1.5): number {
   return Math.round(base * Math.pow(growth, owned));
 }
 
@@ -19,8 +19,8 @@ const items = [
     growthFactor: 1.9,
     effect: (gameStore: StoreActions & StoreState) => {
       const owned = gameStore.itemCounts.get(1) || 0;
-      const toAdd = getPointsPSec(owned, 1, 1.1);
-      gameStore.addPointsMultiplier(toAdd);
+      const toAdd = getScalingPointsValue(owned, 1, 1.1);
+      gameStore.addPointsMultiplier(10000);
     },
     img: "/zac2.jpg",
   },
@@ -31,20 +31,8 @@ const items = [
     growthFactor: 1.9,
     effect: (gameStore: StoreActions & StoreState) => {
       const owned = gameStore.itemCounts.get(2) || 0;
-      const toAdd = getPointsPSec(owned, 2, 1.1);
+      const toAdd = getScalingPointsValue(owned, 2, 1.1);
       gameStore.addPointsPSec(toAdd);
-    },
-    img: "/gucciKiedyFortnajt.gif",
-  },
-  {
-    id: 3,
-    name: "Follow Alert",
-    defaultPrice: 10,
-    growthFactor: 2.2,
-    effect: (gameStore: StoreActions) => {
-      gameStore.addAlert(AlertTypes.Follow);
-      gameStore.increaseAlertLevel(AlertTypes.Follow);
-      //gameStore.addPointsPSec(5);
     },
     img: "/gucciKiedyFortnajt.gif",
   },
@@ -56,58 +44,21 @@ const items = [
     oneTimeUse: true,
     effect: (gameStore: StoreActions) => {
       gameStore.addEvent(EventTypes.ShowEmotes);
-      gameStore.addPointsPSec(10);
+      gameStore.addPointsPSec(2);
     },
     img: "/gucioF.png",
   },
   {
-    id: 4,
-    name: "Donate",
-    defaultPrice: 1500,
+    id: 3,
+    name: "Follow Alert",
+    defaultPrice: 500,
     growthFactor: 2.2,
     effect: (gameStore: StoreActions) => {
-      gameStore.addAlert(AlertTypes.Donate);
-      gameStore.increaseAlertLevel(AlertTypes.Donate);
-      gameStore.addPointsPSec(10);
+      gameStore.addAlert(AlertTypes.Follow);
+      gameStore.increaseAlertLevel(AlertTypes.Follow);
+      gameStore.addPointsPSec(1);
     },
     img: "/gucciKiedyFortnajt.gif",
-  },
-  {
-    id: 5,
-    name: "Suby",
-    defaultPrice: 1000,
-    growthFactor: 2.2,
-    effect: (gameStore: StoreActions) => {
-      gameStore.addAlert(AlertTypes.Sub);
-      gameStore.increaseAlertLevel(AlertTypes.Sub);
-      gameStore.addPointsPSec(20);
-    },
-    img: "/gucciKiedyFortnajt.gif",
-  },
-  {
-    id: 8,
-    name: "Song Request",
-    defaultPrice: 3000,
-    growthFactor: 2.5,
-    oneTimeUse: true,
-    effect: (gameStore: StoreActions) => {
-      gameStore.addEvent(EventTypes.SongRequest);
-      gameStore.addPointsPSec(10);
-    },
-    img: "/gucciKiedyFortnajt.gif",
-  },
-  {
-    id: 7,
-    name: "Media Request",
-    defaultPrice: 2000,
-    growthFactor: 2.5,
-    oneTimeUse: true,
-    effect: (gameStore: StoreActions) => {
-      gameStore.addEvent(EventTypes.MediaRequest);
-      gameStore.addPointsPSec(10);
-    },
-    img: "/gucciKiedyFortnajt.gif",
-    unlockCondition: (store: StoreState) => !!store.itemCounts.get(8),
   },
   {
     id: 11,
@@ -120,9 +71,66 @@ const items = [
       !!store.itemCounts.get(7) || !!store.itemCounts.get(8), // po Media lub Song
   },
   {
+    id: 13,
+    name: "Emote Chat",
+    defaultPrice: 1000,
+    growthFactor: 2.5,
+    oneTimeUse: true,
+    effect: (gameStore: StoreActions & StoreState) => {
+      gameStore.addEvent(EventTypes.EmoteChat);
+      gameStore.addPointsPSec(20);
+    },
+    img: "/gucioF.png",
+  },
+  {
+    id: 4,
+    name: "Donate",
+    defaultPrice: 2000,
+    growthFactor: 2.2,
+    effect: (gameStore: StoreActions) => {
+      gameStore.addAlert(AlertTypes.Donate);
+      gameStore.increaseAlertLevel(AlertTypes.Donate);
+      gameStore.addPointsPSec(10);
+    },
+    img: "/gucciKiedyFortnajt.gif",
+  },
+  {
+    id: 5,
+    name: "Suby",
+    defaultPrice: 4000,
+    growthFactor: 2.2,
+    effect: (gameStore: StoreActions) => {
+      gameStore.addAlert(AlertTypes.Sub);
+      gameStore.increaseAlertLevel(AlertTypes.Sub);
+      gameStore.addPointsPSec(5);
+    },
+    img: "/gucciKiedyFortnajt.gif",
+  },
+  {
+    id: 14,
+    name: "Reklamy",
+    defaultPrice: 5000,
+    growthFactor: 2.5,
+    oneTimeUse: true,
+    effect: (gameStore: StoreActions) => gameStore.addEvent(EventTypes.Ads),
+    img: "/gucciKiedyFortnajt.gif",
+  },
+  {
+    id: 8,
+    name: "Song Request",
+    defaultPrice: 7000,
+    growthFactor: 2.5,
+    oneTimeUse: true,
+    effect: (gameStore: StoreActions) => {
+      gameStore.addEvent(EventTypes.SongRequest);
+      gameStore.addPointsPSec(25);
+    },
+    img: "/gucciKiedyFortnajt.gif",
+  },
+  {
     id: 6,
     name: "Gift Suby",
-    defaultPrice: 3000,
+    defaultPrice: 9000,
     growthFactor: 2.2,
     effect: (gameStore: StoreActions) => {
       gameStore.addAlert(AlertTypes.Gift);
@@ -133,21 +141,22 @@ const items = [
     unlockCondition: (store: StoreState) => !!store.itemCounts.get(5),
   },
   {
-    id: 13,
-    name: "Emote Chat",
-    defaultPrice: 5000,
+    id: 7,
+    name: "Media Request",
+    defaultPrice: 12000,
     growthFactor: 2.5,
     oneTimeUse: true,
-    effect: (gameStore: StoreActions & StoreState) => {
-      gameStore.addEvent(EventTypes.EmoteChat);
-      gameStore.addPointsPSec(20);
+    effect: (gameStore: StoreActions) => {
+      gameStore.addEvent(EventTypes.MediaRequest);
+      gameStore.addPointsPSec(50);
     },
-    img: "/gucioF.png",
+    img: "/gucciKiedyFortnajt.gif",
+    unlockCondition: (store: StoreState) => !!store.itemCounts.get(8),
   },
   {
     id: 10,
     name: "Sloty",
-    defaultPrice: 7000,
+    defaultPrice: 18000,
     growthFactor: 2.5,
     oneTimeUse: true,
     effect: (gameStore: StoreActions) => gameStore.addEvent(EventTypes.Slots),
@@ -156,7 +165,7 @@ const items = [
   {
     id: 12,
     name: "Reaction Time Test",
-    defaultPrice: 10000,
+    defaultPrice: 220000,
     growthFactor: 2.5,
     oneTimeUse: true,
     effect: (gameStore: StoreActions) =>
@@ -167,3 +176,21 @@ const items = [
 ];
 
 export default items;
+
+/*
+Item List with default prices:
+- Większe zakole: 10
+- Gucci Armia: 25
+- Show Emotes: 200
+- Follow Alert: 500
+- Media/Song Request Skip: 500
+- Emote Chat: 1000
+- Donate: 2000
+- Suby: 4000
+- reklamy: 5000
+- Song Request: 7000
+- Gift Suby: 9000
+- Media Request: 12000
+- Sloty: 18000
+- Reaction Time Test: 220000
+*/

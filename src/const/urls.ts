@@ -146,3 +146,16 @@ export const SongRequestURLs = [
     title: "Paranoizer - Brainiac",
   },
 ];
+
+export const AdsVideoURLs = [
+  "https://www.youtube.com/watch?v=ccT2hrFLSuQ",
+  "https://www.youtube.com/watch?v=gijuCMhuXrQ",
+  "https://www.youtube.com/watch?v=gxUT10gjH64",
+  "https://www.youtube.com/watch?v=B28v3WAfXr8",
+  "https://www.youtube.com/watch?v=zIrjvHZjid0",
+  "https://www.youtube.com/watch?v=U3d633SH4Ek",
+  "https://www.youtube.com/watch?v=vTw_FnNPksM",
+  "https://www.youtube.com/watch?v=YbY9xkJzHI0",
+  "https://www.youtube.com/watch?v=BEqMzK8SmDs",
+  "https://www.youtube.com/watch?v=ufoXsfWxmX8",
+];

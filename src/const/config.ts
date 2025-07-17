@@ -4,7 +4,7 @@ export const ALERT_CONFIG = {
   MAX_DELAY: 60000,
   LEVEL_FACTOR: 4500,
   RANDOM_DELAY: 5000,
-  VISIBLE_DURATION: 5000,
+  VISIBLE_DURATION: 3000,
   REWARD_BASE: 15,
   REWARD_LEVEL_MULTIPLIER: 0.5,
 };
@@ -69,4 +69,14 @@ export const MEDIA_PLAYER_CONFIG = {
 export const TWITCH_CHAT_CONFIG = {
   MAX_MESSAGES: 100,
   SCROLL_THRESHOLD_RATIO: 0.1,
+};
+
+export const ADS_VIDEO_CONFIG = {
+  // Minimum and maximum interval between video ads (milliseconds)
+  INTERVAL_MIN: 30000, // 30s
+  INTERVAL_MAX: 90000, // 90s
+  // Percentages used to calculate random absolute positioning and size.
+  WIDTH_PERCENT: 15, // width of the player in vw
+  HEIGHT_PERCENT: 15, // not used directly (ReactPlayer keeps aspect ratio)
+  VOLUME: 0.1,
 };

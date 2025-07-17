@@ -60,7 +60,9 @@ const Store = () => {
   const { discoveredItems, availableItems } = store;
   useItemDiscovery();
 
-  const visibleItems = items.filter((item) => discoveredItems.has(item.id));
+  const visibleItems = items
+    .filter((item) => discoveredItems.has(item.id))
+    .sort((a, b) => a.defaultPrice - b.defaultPrice);
 
   return (
     <div className="rounded-none h-full">
