@@ -34,16 +34,6 @@ import MediaRequest from "./components/MediaPlayer/MediaRequest";
 function App() {
   return (
     <div className=" select-none flex flex-row content-center justify-between min-h-svh w-full">
-      <AlertBox />
-      <AdsVideo />
-      <MediaRequest />
-      <SongRequest />
-      <ShowEmote />
-      <GucciArmia />
-      <SlotMachine />
-      <ReactionTimeTest />
-      <DevStats />
-      {/* <WttgHack /> */}
       <div className="w-1/5  bg-sidebar-bg border-r-2 border-color-border  ">
         <Store />
       </div>
@@ -58,6 +48,16 @@ function App() {
       <div className="w-1/5 h-lvh bg-chat border-color-border border-l-2  ">
         <TwitchChat />
       </div>
+      <AlertBox />
+      <AdsVideo />
+      <MediaRequest />
+      <SongRequest />
+      <ShowEmote />
+      <GucciArmia />
+      <SlotMachine />
+      <ReactionTimeTest />
+      <DevStats />
+      {/* <WttgHack /> */}
     </div>
   );
 }
