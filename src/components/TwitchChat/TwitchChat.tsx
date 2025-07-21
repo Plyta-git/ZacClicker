@@ -164,7 +164,7 @@ const TwitchChat = () => {
     return () => {
       client.removeListener("message", handleMessage);
     };
-  }, []);
+  }, [MAX_MESSAGES]);
 
   useLayoutEffect(() => {
     const chatContainer = chatContainerRef.current;
@@ -188,7 +188,7 @@ const TwitchChat = () => {
       // Store the current scrollHeight for the next update check
       prevScrollHeightRef.current = chatContainer.scrollHeight;
     }
-  }, [messages]);
+  }, [SCROLL_THRESHOLD_RATIO, messages]);
 
   if (loading) return <div>Loading chat...</div>;
   if (error) return <div>Error: {error}</div>;
