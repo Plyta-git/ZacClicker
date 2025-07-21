@@ -9,7 +9,7 @@ export type StoreState = {
   itemCounts: Map<number, number>;
   activeAlerts: AlertTypes[];
   activeEvents: Record<EventTypes, boolean>;
-  skips: number;
+  mediaSkipPrice: number;
   discoveredItems: Set<number>;
   availableItems: Set<number>;
   alertLevels: Map<AlertTypes, number>;
@@ -30,8 +30,7 @@ export type StoreActions = {
   addEvent: (event: EventTypes) => void;
   removeEvent: (event: EventTypes) => void;
   buyItem: (item: ItemType, callback: () => void) => void;
-  addSkip: (qty: number) => void;
-  removeSkip: (qty: number) => void;
+  skipMedia: () => boolean;
   discoverItem: (id: number) => void;
   markItemAvailable: (id: number) => void;
   increaseAlertLevel: (type: AlertTypes) => void;
@@ -51,13 +50,16 @@ export type StoreActions = {
   tickPoints: () => void;
 };
 
+export const selectMediaSkipCost = (state: StoreState) =>
+  Math.ceil(Math.max(state.playerPoints * 0.1, state.mediaSkipPrice));
+
 const useGameStore = create<StoreState & StoreActions>((set, get) => ({
   playerPoints: 0,
   pointsMultiplier: 1,
   pointsPSec: 0,
   itemCounts: new Map<number, number>(),
   activeAlerts: [],
-  skips: 0,
+  mediaSkipPrice: 100,
   activeEvents: {
     [EventTypes.MediaRequest]: false,
     [EventTypes.SongRequest]: false,
@@ -66,6 +68,7 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     [EventTypes.ReactionTimeTest]: false,
     [EventTypes.EmoteChat]: false,
     [EventTypes.Ads]: false,
+    [EventTypes.TwitchChat]: false,
   },
   discoveredItems: new Set<number>(),
   availableItems: new Set<number>(),
@@ -116,14 +119,17 @@ const useGameStore = create<StoreState & StoreActions>((set, get) => ({
     set((state) => ({
       playerPoints: state.playerPoints + qty,
     })),
-  addSkip: (qty: number) =>
-    set((state) => ({
-      skips: state.skips + qty,
-    })),
-  removeSkip: (qty: number) =>
-    set((state) => ({
-      skips: state.skips - qty,
-    })),
+  skipMedia: () => {
+    const cost = selectMediaSkipCost(get());
+    const currentPoints = get().playerPoints;
+
+    if (currentPoints >= cost) {
+      get().decreasePoints(cost);
+      set({ mediaSkipPrice: Math.ceil(cost * 1.2) });
+      return true;
+    }
+    return false;
+  },
   decreasePoints: (qty: number) =>
     set((state) => ({
       playerPoints: state.playerPoints - qty,

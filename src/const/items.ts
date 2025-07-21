@@ -62,13 +62,14 @@ const items = [
   },
   {
     id: 11,
-    name: "Media/Song Request Skip",
-    defaultPrice: 500,
+    name: "Twitch chat",
+    defaultPrice: 200,
     growthFactor: 1.4,
-    effect: (gameStore: StoreActions) => gameStore.addSkip(1),
+    oneTimeUse: true,
+    effect: (gameStore: StoreActions) => {
+      gameStore.addEvent(EventTypes.TwitchChat);
+    },
     img: "/gucciKiedyFortnajt.gif",
-    unlockCondition: (store: StoreState) =>
-      !!store.itemCounts.get(7) || !!store.itemCounts.get(8), // po Media lub Song
   },
   {
     id: 13,

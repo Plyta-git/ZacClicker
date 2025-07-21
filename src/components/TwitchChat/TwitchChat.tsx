@@ -120,6 +120,9 @@ const TwitchChat = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const prevScrollHeightRef = useRef<number | null>(null);
   const { MAX_MESSAGES, SCROLL_THRESHOLD_RATIO } = TWITCH_CHAT_CONFIG;
+  const twitchChatActive = useGameStore(
+    (state) => state.activeEvents.twitchchat
+  );
 
   useEffect(() => {
     const loadEmotes = async () => {
@@ -189,6 +192,8 @@ const TwitchChat = () => {
 
   if (loading) return <div>Loading chat...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  if (!twitchChatActive) return <></>;
 
   return (
     <div ref={chatContainerRef} className="h-full overflow-y-auto p-2">

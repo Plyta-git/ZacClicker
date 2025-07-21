@@ -27,6 +27,7 @@ export enum EventTypes {
   ReactionTimeTest = "reactiontimetest",
   EmoteChat = "emotechat",
   Ads = "ads",
+  TwitchChat = "twitchchat",
 }
 
 export type Alert = {

@@ -1,5 +1,7 @@
 import { MediaRequestURLs } from "@/const/urls";
-import useGameStore from "@/hooks/useGameStore/useGameStore";
+import useGameStore, {
+  selectMediaSkipCost,
+} from "@/hooks/useGameStore/useGameStore";
 import { getRandomNumber } from "@/hooks/utils";
 import { useState, useRef } from "react";
 import ReactPlayer from "react-player";
@@ -9,30 +11,33 @@ const MediaRequest = () => {
   const [currentIndex, setCurrentIndex] = useState(
     getRandomNumber(MediaRequestURLs.length)
   );
-  const [volumePlayer, setVolumePlayer] = useState(0.5);
+  const [volumePlayer, setVolumePlayer] = useState(0.3);
+  const [playbackProgress, setPlaybackProgress] = useState(0);
   const playerRef = useRef<ReactPlayer | null>(null);
-  const removeSkip = useGameStore((store) => store.removeSkip);
-  const skipsCount = useGameStore((store) => store.skips);
+
+  const skipMedia = useGameStore((state) => state.skipMedia);
+  const skipCost = useGameStore(selectMediaSkipCost);
+  const playerPoints = useGameStore((state) => state.playerPoints);
+
   const mediarequestEvent = useGameStore(
-    (store) => store.activeEvents.mediarequest
+    (state) => state.activeEvents.mediarequest
   );
 
   const handleSkip = () => {
-    if (skipsCount < 1) return;
-    removeSkip(1);
-    setCurrentIndex(getRandomNumber(MediaRequestURLs.length));
+    if (skipMedia()) {
+      setCurrentIndex(getRandomNumber(MediaRequestURLs.length));
+    }
   };
 
-  // Auto-advance to the next video when the current one ends or errors out
   const handleVideoEnd = () => {
     setCurrentIndex(getRandomNumber(MediaRequestURLs.length));
   };
 
-  // Some Streamable embeds may never fire onEnded and instead loop automatically.
-  // Detect near-end of video via onProgress and trigger manual advance.
   const endedFlagRef = useRef(false);
-  const handleProgress = (state: { playedSeconds: number }) => {
+  const handleProgress = (state: { played: number; playedSeconds: number }) => {
     const duration = playerRef.current?.getDuration?.() || 0;
+    setPlaybackProgress(state.played * 100);
+
     if (duration > 0) {
       const { playedSeconds } = state;
       const progressRatio = playedSeconds / duration;
@@ -51,39 +56,53 @@ const MediaRequest = () => {
 
   if (!mediarequestEvent) return <></>;
 
-  // napis na czacie co widzoiwe live maja napsiac
-  // rozgrzanie czola po spamowaniu
-
   return (
-    <div className="w-1/4 h-1/3 absolute bottom-0 right-1/5 flex flex-col z-10">
-      <div>
-        <button
-          className=" bg-main p-2 rounded-sm border-main-active border"
-          onClick={handleSkip}
-        >
-          Skip({skipsCount})
-        </button>
-        <input
-          type="range"
-          onChange={(e) => setVolumePlayer(Number(e.target.value))}
-          min={0}
-          max={1}
-          step={0.01}
+    <div className="w-1/5 h-2/9 absolute bottom-0 right-1/5 flex flex-col bg-neutral-900 text-white shadow-lg overflow-hidden">
+      <div className="p-1 w-full">
+        <ReactPlayer
+          ref={playerRef}
+          volume={volumePlayer}
+          playing
+          loop={false}
+          muted={MediaRequestURLs[currentIndex].includes("streamable.com")}
+          width="100%"
+          height="100%"
+          url={MediaRequestURLs[currentIndex]}
+          onEnded={handleVideoEnd}
+          onError={handleVideoEnd}
+          onProgress={handleProgress}
         />
-        {Math.round(volumePlayer * 100)}%
       </div>
-      <ReactPlayer
-        ref={playerRef}
-        volume={volumePlayer}
-        playing
-        loop={false}
-        muted={MediaRequestURLs[currentIndex].includes("streamable.com")}
-        width="100%"
-        url={MediaRequestURLs[currentIndex]}
-        onEnded={handleVideoEnd}
-        onError={handleVideoEnd}
-        onProgress={handleProgress}
-      />
+      <div className="flex justify-between items-center gap-4 w-full p-2">
+        <div className="flex items-center gap-2 w-1/2">
+          <input
+            type="range"
+            onChange={(e) => setVolumePlayer(Number(e.target.value))}
+            min={0}
+            max={1}
+            step={0.01}
+            value={volumePlayer}
+            className="w-full"
+          />
+          <div className="text-xs w-12 text-center font-mono flex-shrink-0">
+            {`${(volumePlayer * 100).toFixed(0)}%`}
+          </div>
+        </div>
+        <button
+          className="bg-main p-1 rounded-sm border-main-active border whitespace-nowrap text-sm disabled:bg-gray-500 disabled:cursor-not-allowed"
+          onClick={handleSkip}
+          disabled={playerPoints < skipCost}
+        >
+          Skip ({skipCost} pkt)
+        </button>
+      </div>
+
+      <div className="w-full bottom-0 absolute bg-gray-600 h-1">
+        <div
+          className="bg-green-500 h-1 transition-all"
+          style={{ width: `${playbackProgress}%` }}
+        />
+      </div>
     </div>
   );
 };

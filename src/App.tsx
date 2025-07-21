@@ -11,7 +11,7 @@ import TwitchChat from "./components/TwitchChat/TwitchChat";
 import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
 import DevStats from "./components/DevPanel/DevStats";
 import MediaRequest from "./components/MediaPlayer/MediaRequest";
-// import WttgHack from "./components/WttgHack/WttgHack";
+import WttgHack from "./components/WttgHack/WttgHack";
 
 /* TODO:
 - chat sabotuje
@@ -38,7 +38,7 @@ function App() {
         <Store />
       </div>
       <div className="flex-1 flex items-center justify-center relative">
-        <div className="absolute top-0 w-full text-center mt-4 pointer-events-none">
+        <div className="absolute top-40 w-full text-center mt-4 pointer-events-none">
           <ZacInfo />
         </div>
         <div>

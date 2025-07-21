@@ -17,7 +17,7 @@ const ZacInfo = () => {
   // Ensure the info does not block pointer events, so buttons underneath remain clickable.
   // The text remains visually in the same place.
   return (
-    <>
+    <div className=" mt-25">
       <div
         className="transition-all text-6xl m-5 pointer-events-none select-none"
         style={{ position: "relative", zIndex: 1 }}
@@ -30,7 +30,7 @@ const ZacInfo = () => {
       >
         zakola na sekundę: {pointsPSec}
       </div>
-    </>
+    </div>
   );
 };
 
