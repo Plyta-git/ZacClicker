@@ -51,8 +51,11 @@ const MediaRequest = () => {
 
   if (!mediarequestEvent) return <></>;
 
+  // napis na czacie co widzoiwe live maja napsiac
+  // rozgrzanie czola po spamowaniu
+
   return (
-    <div className="w-1/4 h-1/3 absolute bottom-0 right-1/5 flex flex-col ">
+    <div className="w-1/4 h-1/3 absolute bottom-0 right-1/5 flex flex-col z-10">
       <div>
         <button
           className=" bg-main p-2 rounded-sm border-main-active border"

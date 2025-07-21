@@ -14,10 +14,20 @@ const ZacInfo = () => {
     return () => clearInterval(interval);
   }, [tickPoints]);
 
+  // Ensure the info does not block pointer events, so buttons underneath remain clickable.
+  // The text remains visually in the same place.
   return (
     <>
-      <div className=" transition-all text-2xl"> zakola: {points} </div>
-      <div className="  mb-2 text-neutral-400">
+      <div
+        className="transition-all text-6xl m-5 pointer-events-none select-none"
+        style={{ position: "relative", zIndex: 1 }}
+      >
+        zakola: {points}
+      </div>
+      <div
+        className="mb-2 text-neutral-400 pointer-events-none select-none"
+        style={{ position: "relative", zIndex: 1 }}
+      >
         zakola na sekundę: {pointsPSec}
       </div>
     </>

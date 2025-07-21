@@ -11,7 +11,7 @@ import TwitchChat from "./components/TwitchChat/TwitchChat";
 import ReactionTimeTest from "./components/ReactionTimeTest/ReactionTimeTest";
 import DevStats from "./components/DevPanel/DevStats";
 import MediaRequest from "./components/MediaPlayer/MediaRequest";
-import WttgHack from "./components/WttgHack/WttgHack";
+// import WttgHack from "./components/WttgHack/WttgHack";
 
 /* TODO:
 - chat sabotuje
@@ -43,13 +43,15 @@ function App() {
       <SlotMachine />
       <ReactionTimeTest />
       <DevStats />
-      <WttgHack />
+      {/* <WttgHack /> */}
       <div className="w-1/5  bg-sidebar-bg border-r-2 border-color-border  ">
         <Store />
       </div>
-      <div className=" flex justify-center flex-col content-center">
-        <div className=" flex justify-center flex-col content-center bg-sidebar-bg py-4 px-6 m-2 rounded-lg border-color-border border-2">
+      <div className="flex-1 flex items-center justify-center relative">
+        <div className="absolute top-0 w-full text-center mt-4 pointer-events-none">
           <ZacInfo />
+        </div>
+        <div>
           <ZacButton />
         </div>
       </div>
